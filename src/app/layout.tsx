@@ -7,6 +7,7 @@ import { HydrateClient } from "@/server/trpc/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { TRPCProvider } from "./_trpc/client";
+import Navbar from "@/components/Nav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,8 +36,11 @@ export default function RootLayout({
       >
         <TRPCProvider>
           <HydrateClient>
+            <Navbar />
             <ErrorBoundary fallback={<div>Something went wrong</div>}>
-              <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+              <Suspense fallback={<div>Loading...</div>}>
+                <main className="pt-14">{children}</main>
+              </Suspense>
             </ErrorBoundary>
           </HydrateClient>
         </TRPCProvider>

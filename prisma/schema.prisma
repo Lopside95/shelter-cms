@@ -1,0 +1,75 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id    Int    @id @default(autoincrement())
+  email String @unique
+  role  Role
+}
+
+model Item {
+  id        Int      @id @default(autoincrement())
+  item_name  String   @db.VarChar(255)
+  quantity  Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Animal {
+  id         Int      @id @default(autoincrement()) 
+  name       String   @db.VarChar(255)
+  species    String   @db.VarChar(255)
+  age        Int
+  chip_number String   @unique
+  shelter_id  Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  shelter    Shelter?  @relation(fields: [shelter_id], references: [id])
+  breed      String
+}
+
+model Shelter {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  location  String   @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  phone     String   @db.VarChar(255)
+  email     String   @unique
+  longitude Float
+  latitude  Float
+  capacity  Int
+  animals   Animal[]
+  foods     Food[]
+}
+
+model Food {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  quantity  Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  shelter_id Int
+  shelter   Shelter?  @relation(fields: [shelter_id], references: [id])
+}
+
+enum Condition {
+  HEALTHY
+  SICK
+  INJURED
+  DISABLED
+}
+
+enum Role {
+  USER
+  ADMIN
+}
