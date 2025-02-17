@@ -11,15 +11,17 @@ export default function Home() {
   void trpc.hello.prefetch({ text: "world" });
 
   return (
-    <TRPCProvider>
-      <HydrateClient>
-        <ErrorBoundary fallback={<div>Something went wrong</div>}>
-          <Suspense fallback={<div>Loading...</div>}>
-            <div>Hello, waiting</div>
-          </Suspense>
-        </ErrorBoundary>
-      </HydrateClient>
-    </TRPCProvider>
+    <div>DIV DIV DIV</div>
+
+    // <TRPCProvider>
+    //   <HydrateClient>
+    //     <ErrorBoundary fallback={<div>Something went wrong</div>}>
+    //       <Suspense fallback={<div>Loading...</div>}>
+    //         <div>Hello, waiting</div>
+    //       </Suspense>
+    //     </ErrorBoundary>
+    //   </HydrateClient>
+    // </TRPCProvider>
   );
 }
 
