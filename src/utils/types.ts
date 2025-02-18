@@ -35,6 +35,7 @@ export const shelter = z.object({
   location: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  capacity: z.number(),
   phone: z.string(),
   email: z.string(),
   longitude: z.number(),
