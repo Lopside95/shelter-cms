@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { baseProcedure, router } from "@/server/trpc/init";
+import { shelter } from "@/utils/types";
 
 export const appRouter = router({
   hello: baseProcedure
@@ -13,6 +14,16 @@ export const appRouter = router({
         greeting: `hello ${opts.input.text}`,
       };
     }),
+
+  // getShelter: baseProcedure.input(shelter).query((id) => {
+  //   return {
+  //     shelter: {
+  //       where: {
+  //         id: shelter.id,
+  //       }
+  //     }
+  //   };
+  // }),
 });
 
 export type AppRouter = typeof appRouter;

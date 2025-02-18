@@ -6,7 +6,7 @@ import { trpc } from "@/server/trpc/server";
 import { HydrateClient } from "@/server/trpc/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { TRPCProvider } from "./_trpc/client";
+import { TRPCProvider } from "./trpc/client";
 import Navbar from "@/components/Nav";
 
 const geistSans = Geist({
