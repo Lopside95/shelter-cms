@@ -21,7 +21,7 @@ const getQueryClient = () => {
   return (queryClient ??= makeQueryClient());
 };
 
-const getUrl = () => {
+export const getUrl = () => {
   const base = (() => {
     if (typeof window !== "undefined") return "";
     if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
