@@ -34,7 +34,7 @@ export const appRouter = router({
     .input(z.string())
     .query(async ({ ctx, input }) => {
       try {
-        const res = await prisma.shelter.findMany({
+        const res = await prisma.shelter.findFirst({
           where: {
             name: input,
           },

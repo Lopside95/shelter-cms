@@ -25,13 +25,20 @@ export const foodSchema = z.object({
 });
 
 export const shelterSchema = z.object({
-  name: z.string(),
-  location: z.string(),
-  phone: z.string(),
-  email: z.string(),
-  longitude: z.number(),
-  latitude: z.number(),
-  capacity: z.number(),
+  name: z.string().min(1, "Name is required"),
+  location: z.string().min(1, "Location is required"),
+  phone: z.string().min(1, "Phone number is required"),
+  email: z.string().email("Invalid email address"),
+  // longitude: z.number().min(-180).max(180),
+  // latitude: z.number().min(-90).max(90),
+  capacity: z.number().min(0, "Capacity must be a positive number"),
+  // name: z.string(),
+  // location: z.string(),
+  // phone: z.string(),
+  // email: z.string(),
+  // longitude: z.number(),
+  // latitude: z.number(),
+  // capacity: z.number(),
   animals: z.array(animal).optional(),
   foods: z.array(food).optional(),
 });

@@ -58,9 +58,25 @@ export type Role = z.infer<typeof Role>;
 
 export type FormInput = {
   name: string;
-  type?: string;
   label: string;
+  desc?: string;
+  placeholder?: string;
+  type?: string;
+  cn?: string;
 };
+
+export type TextInputType = {
+  name: string;
+  label?: string;
+  desc?: string;
+  placeholder?: string;
+  type?: string;
+  txtCn?: string;
+  labelCn?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  cn?: string;
+};
+
 export type Route = "items" | "animals" | "foods" | "shelters";
 
 export interface Add<T> {
