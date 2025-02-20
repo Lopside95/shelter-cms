@@ -4,20 +4,10 @@ import { shelter } from "@/utils/types";
 import { get } from "http";
 import { TRPCError } from "@trpc/server";
 import { itemSchema } from "@/utils/schemas";
+import itemsRouter from "./items";
 
 export const appRouter = router({
-  hello: baseProcedure
-    .input(
-      z.object({
-        text: z.string(),
-      })
-    )
-    .query((opts) => {
-      return {
-        greeting: `hello ${opts.input.text}`,
-      };
-    }),
-
+  items: itemsRouter,
   getShelters: baseProcedure.query(async ({ ctx }) => {
     try {
       const res = await prisma.shelter.findMany();
@@ -97,36 +87,6 @@ export const appRouter = router({
       console.error(error);
     }
   }),
-  createItem: baseProcedure
-    .input(itemSchema)
-    .mutation(async ({ input, ctx }) => {
-      try {
-        const data = input;
-
-        console.log("ctx", ctx);
-
-        const newItem = await prisma.item.create({
-          data: {
-            item_name: data.itemName,
-            quantity: data.quantity,
-          },
-        });
-
-        return newItem;
-      } catch (error) {
-        console.error(error);
-      }
-    }),
-
-  // getShelter: baseProcedure.input(shelter).query((id) => {
-  //   return {
-  //     shelter: {
-  //       where: {
-  //         id: shelter.id,
-  //       }
-  //     }
-  //   };
-  // }),
 });
 
 export type AppRouter = typeof appRouter;

@@ -273,12 +273,12 @@ export default function ShelterProfile() {
   );
 }
 
-export async function generateStaticParams() {
-  const shelters: Shelter[] = await fetch(`${getUrl}/shelters`).then((res) =>
-    res.json()
-  );
+// export async function generateStaticParams() {
+//   const shelters: Shelter[] = await fetch(`${getUrl}/shelters`).then((res) =>
+//     res.json()
+//   );
 
-  return shelters.map((shelter) => ({
-    slug: shelter.id,
-  }));
-}
+//   return shelters.map((shelter) => ({
+//     slug: shelter.id,
+//   }));
+// }

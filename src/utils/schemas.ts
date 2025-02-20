@@ -2,7 +2,7 @@ import z from "zod";
 import { animal, food } from "./types";
 
 export const itemSchema = z.object({
-  id: z.number().optional(),
+  // id: z.number().optional(),
   itemName: z.string().min(1, { message: "Item name is required" }),
   quantity: z.number(),
 });
