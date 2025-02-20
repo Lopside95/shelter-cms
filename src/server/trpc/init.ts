@@ -8,18 +8,8 @@ import { PrismaClient } from "@prisma/client";
 export const prisma = new PrismaClient();
 
 export const createTRPCContext = cache(async () => {
-  // const prisma = new PrismaClient();
-  // return prisma;
   return {};
 });
-
-// export const createTRPCContext = async (opts: CreateNextContextOptions) => {
-//   const session = await getSession({ req: opts.req });
-
-//   return {
-//     session,
-//   };
-// };
 
 export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
 
@@ -30,3 +20,13 @@ const t = initTRPC.context<Context>().create({
 export const router = t.router;
 export const createCallerFactory = t.createCallerFactory;
 export const baseProcedure = t.procedure;
+
+// const prisma = new PrismaClient();
+// return prisma;
+// export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+//   const session = await getSession({ req: opts.req });
+
+//   return {
+//     session,
+//   };
+// };

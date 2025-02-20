@@ -18,6 +18,10 @@ const Home = () => {
 
   const { data: shelt } = api.getShelters.useQuery();
 
+  const singleShelter = api.getShelterByName.useQuery(toSearch);
+
+  const utils = api.useUtils();
+
   // useEffect(() => {
   //   if (shelt?.length) {
   //     setShelters(shelt as Shelter[]);
@@ -31,7 +35,7 @@ const Home = () => {
   return (
     <TRPCProvider>
       <main className="flex flex-col items-center align-middle ">
-        <h1>Welcome to the CMS</h1>
+        <h1>Welcome to the Shelters page</h1>
       </main>
     </TRPCProvider>
   );

@@ -21,12 +21,33 @@ export const appRouter = router({
   getShelters: baseProcedure.query(async ({ ctx }) => {
     try {
       const res = await prisma.shelter.findMany();
-      console.log("res", res);
       return res;
     } catch (error) {
       console.error(error);
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Failed to fetch shelters",
+      });
     }
   }),
+  getShelterByName: baseProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      try {
+        const res = await prisma.shelter.findMany({
+          where: {
+            name: input,
+          },
+        });
+        return res;
+      } catch (error) {
+        console.error(error);
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Failed to fetch shelters",
+        });
+      }
+    }),
   createShelter: baseProcedure.input(shelter).mutation(async ({ input }) => {
     try {
       const data = input;
