@@ -28,6 +28,7 @@ import FindShelter from "@/components/FindShelter";
 import TextInput from "@/components/TextInput";
 import { use, useState } from "react";
 import { Shelter } from "@prisma/client";
+import { shelter } from "@/utils/types";
 
 const CreateShelter = ({ initialShelters }: { initialShelters: Shelter[] }) => {
   const [toSearch, setToSearch] = useState<string>("");
@@ -99,6 +100,17 @@ const CreateShelter = ({ initialShelters }: { initialShelters: Shelter[] }) => {
               </Button>
             </form>
           </Form>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Find Shelter</CardTitle>
+          <CardDescription>Search for a shelter by name</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {initialShelters.map((shelter) => (
+            <p key={shelter.id}>{shelter.name}</p>
+          ))}
         </CardContent>
       </Card>
 

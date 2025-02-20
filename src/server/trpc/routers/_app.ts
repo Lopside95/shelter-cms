@@ -20,6 +20,30 @@ export const appRouter = router({
       });
     }
   }),
+  getShelterById: baseProcedure
+    .input(z.number())
+    .query(async ({ ctx, input }) => {
+      try {
+        const res = await prisma.shelter.findUnique({
+          where: {
+            id: input,
+          },
+        });
+        if (!res) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Shelter not found",
+          });
+        }
+        return res;
+      } catch (error) {
+        console.error(error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to fetch shelter by ID",
+        });
+      }
+    }),
   getShelterByName: baseProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
