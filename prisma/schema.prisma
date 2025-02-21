@@ -30,9 +30,9 @@ model Animal {
   species    String   @db.VarChar(255)
   age        Int
   chip_number String   @unique
-  shelter_id  Int
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+  shelter_id  Int
   shelter    Shelter?  @relation(fields: [shelter_id], references: [id])
   breed      String
 }
@@ -49,13 +49,15 @@ model Shelter {
   latitude  Float
   capacity  Int
   animals   Animal[]
-  foods     Food[]
+  food     Food[]
 }
 
 model Food {
   id        Int      @id @default(autoincrement())
   name      String   @db.VarChar(255)
   quantity  Int
+  brand     String   @db.VarChar(255)
+  type     String   @db.VarChar(255)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   shelter_id Int

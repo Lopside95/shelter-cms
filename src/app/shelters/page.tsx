@@ -4,7 +4,7 @@ import CreateShelter from "./components/CreateShelter";
 
 export default async function ShelterPage() {
   // Fetch initial data on the server
-  const shelters = await trpc.getShelters();
+  const shelters = await trpc.shelters.getShelters();
 
   // const shelters = await api.getAllShelters.query();
 

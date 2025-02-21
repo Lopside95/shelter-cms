@@ -23,6 +23,8 @@ export const animal = z.object({
 export const food = z.object({
   id: z.number(),
   name: z.string(),
+  brand: z.string(),
+  type: z.string(),
   quantity: z.number(),
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -41,20 +43,22 @@ export const shelter = z.object({
   longitude: z.number(),
   latitude: z.number(),
   animals: z.array(animal),
-  foods: z.array(food),
+  food: z.array(food),
 });
 
-const Condition = z.enum(["HEALTHY", "SICK", "INJURED", "DISABLED"]);
+export const species = z.enum(["DOG", "CAT", "RABBIT", "BIRD"]);
+export const condition = z.enum(["HEALTHY", "SICK", "INJURED", "DISABLED"]);
 
-const Role = z.enum(["USER", "ADMIN"]);
+export const role = z.enum(["USER", "ADMIN"]);
 
 export type Item = z.infer<typeof item>;
 
-export type Animal = z.infer<typeof animal>;
-export type Shelter = z.infer<typeof shelter>;
-export type Food = z.infer<typeof food>;
-export type Condition = z.infer<typeof Condition>;
-export type Role = z.infer<typeof Role>;
+export type AnimalProps = z.infer<typeof animal>;
+export type ShelterProps = z.infer<typeof shelter>;
+export type FoodProps = z.infer<typeof food>;
+export type Species = z.infer<typeof species>;
+export type Condition = z.infer<typeof condition>;
+export type Role = z.infer<typeof role>;
 
 export type FormInput = {
   name: string;

@@ -56,11 +56,11 @@ const CreateItem = ({ items }: { items: Item[] }) => {
   //   const shelter = api.getShelterByName.useQuery(toSearch);
   const handleFindShelter = async (name: string) => {};
 
-  const createItemMutation = api.items.createItem.useMutation();
+  const createItem = api.items.createItem.useMutation();
 
   const onSubmit: SubmitHandler<ItemSchema> = async (data: ItemSchema) => {
     try {
-      const res = await createItemMutation.mutateAsync(data);
+      const res = await createItem.mutateAsync(data);
       return res;
     } catch (error) {
       console.error(error);

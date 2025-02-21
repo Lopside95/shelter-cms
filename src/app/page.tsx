@@ -12,7 +12,7 @@ import FeatureCard from "@/components/FeatureCard";
 const LandingPage = () => {
   // const [shelters, setShelters] = useState();
 
-  const shelters = api.getShelters.useQuery();
+  const shelters = api.shelters.getShelters.useQuery();
   // const fetchData = async () => {
 
   //   console.log("res", res);

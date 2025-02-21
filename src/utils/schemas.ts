@@ -20,6 +20,8 @@ export const animalSchema = z.object({
 export const foodSchema = z.object({
   id: z.number().optional(),
   name: z.string(),
+  type: z.string(),
+  brand: z.string(),
   quantity: z.number(),
   shelterId: z.number(),
 });
