@@ -16,7 +16,9 @@ const ShelterProfile = ({ shelter }: { shelter: ShelterProps }) => {
       <EditShelterContact />
       <AnimalsTabs animals={animals ? animals : []} />
 
-      <FoodCard food={food ? food : []} />
+      {food.map((item) => (
+        <FoodCard key={item.id} food={item} />
+      ))}
     </div>
   );
 };

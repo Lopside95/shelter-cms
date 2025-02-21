@@ -1,8 +1,8 @@
-import { Food } from "@/utils/types";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
+import { FoodProps } from "@/utils/types";
 
-const FoodCard = ({ food }: { food: Food }) => {
+const FoodCard = ({ food }: { food: FoodProps }) => {
   return (
     <Card key={food.id}>
       <CardContent className="p-4">

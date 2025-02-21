@@ -7,7 +7,7 @@ import {
   SelectItem,
 } from "./ui/select";
 import { Input } from "./ui/input";
-import { COUNTRY_CODES } from "@/utils/data";
+import { countryCodes } from "@/utils/data";
 
 const EditShelterContact = () => {
   return (
@@ -25,7 +25,7 @@ const EditShelterContact = () => {
                   <SelectValue placeholder="Country" />
                 </SelectTrigger>
                 <SelectContent>
-                  {COUNTRY_CODES.map((country) => (
+                  {countryCodes.map((country) => (
                     <SelectItem key={country.code} value={country.code}>
                       {country.code} {country.country}
                     </SelectItem>

@@ -3,11 +3,10 @@ import ShelterProfile from "../pages/ShelterProfile";
 import { animal, AnimalProps, food, ShelterProps } from "@/utils/types";
 import { Animal, Shelter } from "@prisma/client";
 
-export default async function ShelterPage({
-  params,
-}: {
-  params: { shelter: string };
-}) {
+type Params = Promise<{ shelter: string }>;
+
+export default async function ShelterPage({ params }: { params: Params }) {
+  // const shelterId = params.shelter;
   const shelterId = (await params).shelter;
 
   const shelter = await trpc.shelters.getShelterById(parseInt(shelterId));
