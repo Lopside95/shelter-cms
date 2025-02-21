@@ -46,10 +46,7 @@ const FindShelter = ({
     <Card className=" w-3/4 px-20 mx-auto">
       <CardHeader>
         <CardTitle>{title || "Find Shelter"}</CardTitle>
-        <CardDescription>
-          {desc}
-          {/* {desc || "Find Shelter"}  */}
-        </CardDescription>
+        <CardDescription>{desc}</CardDescription>
       </CardHeader>
       <CardContent>{children}</CardContent>
       <Button onClick={onClick}>{btn || "Submit"}</Button>

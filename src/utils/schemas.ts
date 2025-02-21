@@ -2,7 +2,6 @@ import z from "zod";
 import { animal, food } from "./types";
 
 export const itemSchema = z.object({
-  // id: z.number().optional(),
   itemName: z.string().min(1, { message: "Item name is required" }),
   quantity: z.number(),
 });
@@ -34,13 +33,7 @@ export const shelterSchema = z.object({
   // longitude: z.number().min(-180).max(180),
   // latitude: z.number().min(-90).max(90),
   capacity: z.number().min(0, "Capacity must be a positive number"),
-  // name: z.string(),
-  // location: z.string(),
-  // phone: z.string(),
-  // email: z.string(),
-  // longitude: z.number(),
-  // latitude: z.number(),
-  // capacity: z.number(),
+
   animals: z.array(animal).optional(),
   food: z.array(food).optional(),
 });

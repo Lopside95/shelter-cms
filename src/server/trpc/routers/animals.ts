@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { baseProcedure, prisma, router } from "@/server/trpc/init";
-import { shelter } from "@/utils/types";
 import { TRPCError } from "@trpc/server";
 import { animalSchema } from "@/utils/schemas";
 import { animalPayload } from "@/utils/helpers";
+import { TRPCClientError } from "@trpc/client";
 
 export const animalsRouter = router({
   getAnimals: baseProcedure.query(async ({ ctx }) => {
@@ -23,18 +23,6 @@ export const animalsRouter = router({
             shelter_id: input,
           },
         });
-
-        // const animalsPayload = animals?.map((animal) => ({
-        //   id: animal.id,
-        //   name: animal.name,
-        //   species: animal.species,
-        //   breed: animal.breed,
-        //   age: animal.age,
-        //   chipNumber: animal.chip_number,
-        //   shelterId: animal.shelter_id,
-        //   createdAt: animal.created_at,
-        //   updatedAt: animal.updated_at,
-        // }));
 
         const payload = animals.map((animal) => animalPayload(animal));
         return payload;
@@ -58,14 +46,25 @@ export const animalsRouter = router({
         });
 
         return newAnimal;
-      } catch (error) {
+      } catch (error: unknown) {
         if (error instanceof TRPCError) {
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: `TRPC ERROR: ${error.message}`,
           });
         }
-        console.error(error);
+        if (error instanceof TRPCClientError) {
+          throw new TRPCClientError(
+            ("There was an error: " + error.message) as string
+          );
+        }
+
+        const theError = error as Error;
+        console.log("theError", theError);
+        const cause = theError.cause;
+        console.log("cause", cause);
+
+        throw new Error(`Failed to create animal: ${(error as Error).message}`);
       }
     }),
 });

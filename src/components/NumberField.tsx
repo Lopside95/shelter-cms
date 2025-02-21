@@ -31,8 +31,6 @@ const NumberField = ({ name, type, label, desc }: FormInput) => {
                   field.onChange(Number.parseFloat(e.target.value))
                 }
               />
-
-              {/* <Input {...field} className="w-80" type={type} /> */}
             </FormControl>
             <FormDescription>{desc}</FormDescription>
           </FormItem>
@@ -43,27 +41,3 @@ const NumberField = ({ name, type, label, desc }: FormInput) => {
 };
 
 export default NumberField;
-
-{
-  /* <FormField
-control={form.control}
-name="longitude"
-render={({ field }) => (
-  <FormItem>
-    <FormLabel>Longitude</FormLabel>
-    <FormControl>
-      <Input
-        type="number"
-        placeholder="Enter longitude"
-        {...field}
-        onChange={(e) =>
-          field.onChange(Number.parseFloat(e.target.value))
-        }
-      />
-    </FormControl>
-    <FormDescription>Range: -180 to 180</FormDescription>
-    <FormMessage />
-  </FormItem>
-)}
-/> */
-}

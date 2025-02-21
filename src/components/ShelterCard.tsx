@@ -9,12 +9,6 @@ import {
 } from "./ui/card";
 import { useRouter } from "next/navigation";
 
-interface ShelterCardProps {
-  shelter: ShelterProps;
-  // animals: AnimalProps[];
-  // food: FoodProps[];
-}
-
 const ShelterCard = ({ shelter }: { shelter: ShelterProps }) => {
   const router = useRouter();
 
@@ -29,7 +23,6 @@ const ShelterCard = ({ shelter }: { shelter: ShelterProps }) => {
       <CardContent>
         <h1>{`Animals: ${animals.length}`}</h1>
         {animals.length && animals[0].name}
-        {/* <h2>{animals[0].name}</h2> */}
       </CardContent>
 
       <Button onClick={() => router.push(`shelters/${shelter.id}`)}>

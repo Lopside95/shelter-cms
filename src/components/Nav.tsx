@@ -13,11 +13,8 @@ const Navbar = () => {
         <span className="ml-2 text-2xl font-bold">ShelterShare</span>
       </Link>
       <Link href="/">Home</Link>
-      {/* <Link href="/items/1">Update Item</Link> */}
       <Link href="/items">Items</Link>
       <Link href="/shelters">Shelters</Link>
-      {/* <Link href="/animals">Add Animal</Link>
-      <Link href="/foods">Add Food</Link> */}
     </nav>
   );
 };

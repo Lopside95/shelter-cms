@@ -1,17 +1,11 @@
 import { z } from "zod";
 import { baseProcedure, prisma, router } from "@/server/trpc/init";
-import { animal, shelter } from "@/utils/types";
 import { TRPCError } from "@trpc/server";
 import { shelterSchema } from "@/utils/schemas";
-import {
-  animalPayload,
-  foodPayload,
-  shelterPayload,
-  shelterWithAnimalsAndFood,
-} from "@/utils/helpers";
+import { animalPayload, foodPayload, shelterPayload } from "@/utils/helpers";
 
 export const sheltersRouter = router({
-  getOnlyShelters: baseProcedure.query(async ({ ctx }) => {
+  getOnlyShelters: baseProcedure.query(async () => {
     try {
       const shelters = await prisma.shelter.findMany();
 
@@ -25,7 +19,7 @@ export const sheltersRouter = router({
       });
     }
   }),
-  getShelters: baseProcedure.query(async ({ ctx }) => {
+  getShelters: baseProcedure.query(async () => {
     try {
       const shelters = await prisma.shelter.findMany({
         include: {
@@ -49,75 +43,58 @@ export const sheltersRouter = router({
       });
     }
   }),
-  getShelterById: baseProcedure
-    .input(z.number())
-    .query(async ({ ctx, input }) => {
-      try {
-        const shelter = await prisma.shelter.findUnique({
-          where: {
-            id: input,
-          },
-          include: {
-            animals: true,
-            food: true,
-          },
-        });
-        if (!shelter) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Shelter not found",
-          });
-        }
-
-        const food = shelter.food.map((food) => foodPayload(food));
-        const animals = shelter.animals.map((animal) => animalPayload(animal));
-
-        const payload = {
-          ...shelterPayload(shelter),
-          animals,
-          food,
-        };
-        // const payload = {
-        //   id: shelter.id,
-        //   name: shelter.name,
-        //   location: shelter.location,
-        //   phone: shelter.phone,
-        //   email: shelter.email,
-        //   capacity: shelter.capacity,
-        //   longitude: shelter.longitude,
-        //   latitude: shelter.latitude,
-        //   createdAt: shelter.created_at,
-        //   updatedAt: shelter.updated_at,
-        // };
-
-        return payload;
-      } catch (error) {
-        console.error(error);
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to fetch shelter by ID",
-        });
-      }
-    }),
-  getShelterByName: baseProcedure
-    .input(z.string())
-    .query(async ({ ctx, input }) => {
-      console.log("input", input);
-      try {
-        const res = await prisma.shelter.findFirst({
-          where: {
-            name: input,
-          },
-        });
-        return res;
-      } catch (error) {
-        console.error(error);
+  getShelterById: baseProcedure.input(z.number()).query(async ({ input }) => {
+    try {
+      const shelter = await prisma.shelter.findUnique({
+        where: {
+          id: input,
+        },
+        include: {
+          animals: true,
+          food: true,
+        },
+      });
+      if (!shelter) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Failed to fetch shelters",
+          message: "Shelter not found",
         });
       }
-    }),
+
+      const food = shelter.food.map((food) => foodPayload(food));
+      const animals = shelter.animals.map((animal) => animalPayload(animal));
+
+      const payload = {
+        ...shelterPayload(shelter),
+        animals,
+        food,
+      };
+
+      return payload;
+    } catch (error) {
+      console.error(error);
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to fetch shelter by ID",
+      });
+    }
+  }),
+  getShelterByName: baseProcedure.input(z.string()).query(async ({ input }) => {
+    try {
+      const res = await prisma.shelter.findFirst({
+        where: {
+          name: input,
+        },
+      });
+      return res;
+    } catch (error) {
+      console.error(error);
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Failed to fetch shelters",
+      });
+    }
+  }),
   createShelter: baseProcedure
     .input(shelterSchema)
     .mutation(async ({ input }) => {
@@ -159,55 +136,3 @@ export const sheltersRouter = router({
 });
 
 export default sheltersRouter;
-
-// const shelters = await prisma.shelter.findMany({
-//   include: {
-//     animals: true,
-//     food: true,
-//   },
-// });
-
-// const payload = {
-//   shelters: shelters.map((shelter) => ({
-//     id: shelter.id,
-//     name: shelter.name,
-//     location: shelter.location,
-//     phone: shelter.phone,
-//     email: shelter.email,
-//     capacity: shelter.capacity,
-//     longitude: shelter.longitude,
-//     latitude: shelter.latitude,
-//     createdAt: shelter.created_at,
-//     updatedAt: shelter.updated_at,
-//     animals: shelter.animals,
-//     food: shelter.food,
-//   })),
-// };
-
-// const shelterStuff = shelters.map((shelter) => shelterPayload(shelter));
-
-// console.log("animals", animals);
-
-// const animals = await prisma.animal.findMany({
-
-// });
-//   const payload = animals.map((animal) => animalPayload(animal));
-
-// const animalPayload = shelters.map(());
-
-// const payload = shelters.map((shelter) => shelterWithAnimalsAndFood(shelters, shelter.animals, shelter.foods));
-
-// const payload = shelters.map((shelter) => shelterPayload(shelter));
-
-// const payload = res.map(shelter => ({
-//   id: shelter.id,
-//   name: shelter.name,
-//   location: shelter.location,
-//   phone: shelter.phone,
-//   email: shelter.email,
-//   capacity: shelter.capacity,
-//   longitude: shelter.longitude,
-//   latitude: shelter.latitude,
-//   createdAt: shelter.created_at,
-//   updatedAt: shelter.updated_at,
-// }));

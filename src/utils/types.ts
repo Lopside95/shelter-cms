@@ -51,8 +51,7 @@ export const condition = z.enum(["HEALTHY", "SICK", "INJURED", "DISABLED"]);
 
 export const role = z.enum(["USER", "ADMIN"]);
 
-export type Item = z.infer<typeof item>;
-
+export type ItemProps = z.infer<typeof item>;
 export type AnimalProps = z.infer<typeof animal>;
 export type ShelterProps = z.infer<typeof shelter>;
 export type FoodProps = z.infer<typeof food>;

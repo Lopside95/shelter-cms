@@ -14,8 +14,4 @@ const handler = (req: Request) => {
   });
 };
 
-// export const Get = handler;
-// export const Post = handler;
-// export const Put = handler;
-// export const Delete = handler;
 export { handler as GET, handler as POST, handler as PUT, handler as DELETE };

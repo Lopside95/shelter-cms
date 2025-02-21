@@ -40,6 +40,36 @@ const SheltersHome = ({ shelters }: { shelters: ShelterProps[] }) => {
     },
   });
 
+  const mutateFood = api.food.createFood.useMutation();
+  const mutateAnimal = api.animals.createAnimal.useMutation();
+  const makeFood = async () => {
+    const res = await mutateFood.mutateAsync({
+      name: "Chicken Bits",
+      type: "Wet",
+      brand: "Butternut Box",
+      quantity: 10,
+      shelterId: 1,
+    });
+
+    return res;
+  };
+
+  const addAnimal = async () => {
+    try {
+      const res = await mutateAnimal.mutateAsync({
+        name: "hmmm",
+        species: "DOG",
+        age: 7,
+        chipNumber: "12345679",
+        shelterId: 1,
+        breed: "Africanis",
+      });
+      return res;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleFindShelter = async (name: string) => {};
 
   const mutateShelter = api.shelters.createShelter.useMutation();
@@ -53,10 +83,16 @@ const SheltersHome = ({ shelters }: { shelters: ShelterProps[] }) => {
   };
 
   return (
-    <div className=" flex flex-col gap-5 py-10">
+    <div className=" flex flex-col items-center gap-5 py-10">
       {shelters.map((shelter) => {
         return <ShelterCard key={shelter.id} shelter={shelter} />;
       })}
+      <Button className="w-80" onClick={makeFood}>
+        Make Food
+      </Button>
+      <Button className="w-80" onClick={addAnimal}>
+        Add animal
+      </Button>
 
       {/* <FindShelter>Hi</FindShelter> */}
       {/* <Card>

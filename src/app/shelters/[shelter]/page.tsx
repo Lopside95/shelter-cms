@@ -9,8 +9,7 @@ export default async function ShelterPage({
   params: { shelter: string };
 }) {
   const shelterId = (await params).shelter;
-  // const animals = await trpc.animals.getAnimalsByShelterId(parseInt(shelterId));
-  // const food = await trpc.food.getFoodsByShelterId(parseInt(shelterId));
+
   const shelter = await trpc.shelters.getShelterById(parseInt(shelterId));
 
   if (!shelter) {
@@ -21,16 +20,7 @@ export default async function ShelterPage({
     );
   }
 
-  // const shelterData = {
-  //   ...shelter,
-  //   animals: animals || [],
-  //   food: food || [],
-  // };
-
-  return (
-    <ShelterProfile shelter={shelter} />
-    // <ShelterProfile shelter={shelterPayload} animals={animalsPayload.animals} />
-  );
+  return <ShelterProfile shelter={shelter} />;
 }
 
 export async function generateStaticParams() {
