@@ -1,9 +1,8 @@
 import { trpc } from "@/server/trpc/server";
 import SheltersHome from "./pages/SheltersHome";
-import { shelterPayload, shelterWithAnimalsAndFood } from "@/utils/helpers";
 
 export default async function ShelterPage() {
-  const shelters = await trpc.shelters.getSheltersWithOthers();
+  const shelters = await trpc.shelters.getShelters();
 
   console.log("shelters", shelters);
 

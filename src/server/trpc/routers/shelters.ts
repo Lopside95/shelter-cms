@@ -25,7 +25,7 @@ export const sheltersRouter = router({
       });
     }
   }),
-  getSheltersWithOthers: baseProcedure.query(async ({ ctx }) => {
+  getShelters: baseProcedure.query(async ({ ctx }) => {
     try {
       const shelters = await prisma.shelter.findMany({
         include: {
@@ -53,30 +53,42 @@ export const sheltersRouter = router({
     .input(z.number())
     .query(async ({ ctx, input }) => {
       try {
-        const res = await prisma.shelter.findUnique({
+        const shelter = await prisma.shelter.findUnique({
           where: {
             id: input,
           },
+          include: {
+            animals: true,
+            food: true,
+          },
         });
-        if (!res) {
+        if (!shelter) {
           throw new TRPCError({
             code: "NOT_FOUND",
             message: "Shelter not found",
           });
         }
 
+        const food = shelter.food.map((food) => foodPayload(food));
+        const animals = shelter.animals.map((animal) => animalPayload(animal));
+
         const payload = {
-          id: res.id,
-          name: res.name,
-          location: res.location,
-          phone: res.phone,
-          email: res.email,
-          capacity: res.capacity,
-          longitude: res.longitude,
-          latitude: res.latitude,
-          createdAt: res.created_at,
-          updatedAt: res.updated_at,
+          ...shelterPayload(shelter),
+          animals,
+          food,
         };
+        // const payload = {
+        //   id: shelter.id,
+        //   name: shelter.name,
+        //   location: shelter.location,
+        //   phone: shelter.phone,
+        //   email: shelter.email,
+        //   capacity: shelter.capacity,
+        //   longitude: shelter.longitude,
+        //   latitude: shelter.latitude,
+        //   createdAt: shelter.created_at,
+        //   updatedAt: shelter.updated_at,
+        // };
 
         return payload;
       } catch (error) {
