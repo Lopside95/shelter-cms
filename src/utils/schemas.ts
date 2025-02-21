@@ -42,7 +42,7 @@ export const shelterSchema = z.object({
   // latitude: z.number(),
   // capacity: z.number(),
   animals: z.array(animal).optional(),
-  foods: z.array(food).optional(),
+  food: z.array(food).optional(),
 });
 
 export type AnimalSchema = z.infer<typeof animalSchema>;

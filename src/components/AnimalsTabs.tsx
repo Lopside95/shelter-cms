@@ -3,8 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Bird, Cat, Dog, Rabbit } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import AnimalCard from "./AnimalCard";
 import { AnimalProps, Species } from "@/utils/types";
+import AnimalCard from "./AnimalCard";
 
 const AnimalsTabs = ({ animals }: { animals: AnimalProps[] }) => {
   const [selectedAnimalType, setSelectedAnimalType] = useState<Species>("DOG");
@@ -20,22 +20,22 @@ const AnimalsTabs = ({ animals }: { animals: AnimalProps[] }) => {
           onValueChange={() => setSelectedAnimalType}
         >
           <TabsList className="grid grid-cols-4 w-full max-w-[400px]">
-            <TabsTrigger value="cats" className="flex items-center gap-2">
+            <TabsTrigger value="CATS" className="flex items-center gap-2">
               <Cat className="h-4 w-4" /> Cats
             </TabsTrigger>
-            <TabsTrigger value="dogs" className="flex items-center gap-2">
+            <TabsTrigger value="DOGS" className="flex items-center gap-2">
               <Dog className="h-4 w-4" /> Dogs
             </TabsTrigger>
-            <TabsTrigger value="rabbits" className="flex items-center gap-2">
+            {/* <TabsTrigger value="rabbits" className="flex items-center gap-2">
               <Rabbit className="h-4 w-4" /> Rabbits
             </TabsTrigger>
             <TabsTrigger value="birds" className="flex items-center gap-2">
               <Bird className="h-4 w-4" /> Birds
-            </TabsTrigger>
+            </TabsTrigger> */}
           </TabsList>
 
           {animals.map((animal) => (
-            <TabsContent key={animal.species} value={animal.species}>
+            <TabsContent key={animal.id} value={animal.species}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                 {animals.map((animal) => (
                   <AnimalCard key={animal.id} animal={animal} />

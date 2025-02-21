@@ -3,6 +3,7 @@ import { baseProcedure, prisma, router } from "@/server/trpc/init";
 import { shelter } from "@/utils/types";
 import { TRPCError } from "@trpc/server";
 import { animalSchema } from "@/utils/schemas";
+import { animalPayload } from "@/utils/helpers";
 
 export const animalsRouter = router({
   getAnimals: baseProcedure.query(async ({ ctx }) => {
@@ -22,8 +23,21 @@ export const animalsRouter = router({
             shelter_id: input,
           },
         });
-        // const payload = {};
-        return animals;
+
+        // const animalsPayload = animals?.map((animal) => ({
+        //   id: animal.id,
+        //   name: animal.name,
+        //   species: animal.species,
+        //   breed: animal.breed,
+        //   age: animal.age,
+        //   chipNumber: animal.chip_number,
+        //   shelterId: animal.shelter_id,
+        //   createdAt: animal.created_at,
+        //   updatedAt: animal.updated_at,
+        // }));
+
+        const payload = animals.map((animal) => animalPayload(animal));
+        return payload;
       } catch (error) {
         console.error(error);
       }
@@ -39,6 +53,7 @@ export const animalsRouter = router({
             species: input.species,
             breed: input.breed,
             age: input.age,
+            shelter_id: input.shelterId,
           },
         });
 

@@ -15,16 +15,19 @@ import { shelterSchema, ShelterSchema } from "@/utils/schemas";
 import TextField from "@/components/TextFormField";
 import NumberField from "@/components/NumberField";
 import { useState } from "react";
-import { Shelter } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { api } from "@/app/trpc/client";
+import FindShelter from "@/components/FindShelter";
+import ShelterCard from "@/components/ShelterCard";
+import { ShelterProps } from "@/utils/types";
+import { Shelter } from "@prisma/client";
 
-const CreateShelter = ({ initialShelters }: { initialShelters: Shelter[] }) => {
+const SheltersHome = ({ shelters }: { shelters: ShelterProps[] }) => {
   const [toSearch, setToSearch] = useState<string>("");
 
-  console.log("initialShelters", initialShelters);
-
   const router = useRouter();
+
+  // const convertedShelters = shelters.map((shelter) => )
 
   const form = useForm<ShelterSchema>({
     resolver: zodResolver(shelterSchema),
@@ -45,12 +48,33 @@ const CreateShelter = ({ initialShelters }: { initialShelters: Shelter[] }) => {
     data: ShelterSchema
   ) => {
     const res = await mutateShelter.mutateAsync(data);
-    console.log(data);
+    console.log("res", res);
     return res;
   };
 
   return (
-    <div className=" mx-auto py-10">
+    <div className=" flex flex-col gap-5 py-10">
+      {shelters.map((shelter) => {
+        return <ShelterCard key={shelter.id} shelter={shelter} />;
+      })}
+
+      {/* <FindShelter>Hi</FindShelter> */}
+      {/* <Card>
+        <CardHeader>
+          <CardTitle>Find Shelter</CardTitle>
+          <CardDescription>Search for a shelter by name</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {initialShelters.map((shelter) => (
+            <p
+              onClick={() => router.push(`shelters/${shelter.id}`)}
+              key={shelter.id}
+            >
+              {shelter.name}
+            </p>
+          ))}
+        </CardContent>
+      </Card> */}
       <Card className=" w-3/4 px-20 mx-auto">
         <CardHeader>
           <CardTitle>Create New Shelter</CardTitle>
@@ -93,22 +117,6 @@ const CreateShelter = ({ initialShelters }: { initialShelters: Shelter[] }) => {
           </Form>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Find Shelter</CardTitle>
-          <CardDescription>Search for a shelter by name</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {initialShelters.map((shelter) => (
-            <p
-              onClick={() => router.push(`shelters/${shelter.id}`)}
-              key={shelter.id}
-            >
-              {shelter.name}
-            </p>
-          ))}
-        </CardContent>
-      </Card>
 
       {/* <FindShelter>
         <TextInput
@@ -124,4 +132,4 @@ const CreateShelter = ({ initialShelters }: { initialShelters: Shelter[] }) => {
   );
 };
 
-export default CreateShelter;
+export default SheltersHome;

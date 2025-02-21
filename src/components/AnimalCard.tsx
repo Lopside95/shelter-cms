@@ -1,9 +1,9 @@
 import React from "react";
 import Image from "next/image";
+import { AnimalProps } from "@/utils/types";
 import { Card, CardContent } from "./ui/card";
-import { Animal } from "@/utils/types";
 
-const AnimalCard = ({ animal }: { animal: Animal }) => {
+const AnimalCard = ({ animal }: { animal: AnimalProps }) => {
   return (
     <Card key={animal.id}>
       <CardContent className="p-4">

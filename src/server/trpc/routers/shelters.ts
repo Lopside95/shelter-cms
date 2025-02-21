@@ -4,12 +4,42 @@ import { shelter } from "@/utils/types";
 import { get } from "http";
 import { TRPCError } from "@trpc/server";
 import { shelterSchema } from "@/utils/schemas";
+import { shelterPayload, shelterWithAnimalsAndFood } from "@/utils/helpers";
 
 export const sheltersRouter = router({
   getShelters: baseProcedure.query(async ({ ctx }) => {
     try {
-      const res = await prisma.shelter.findMany();
-      return res;
+      const shelters = await prisma.shelter.findMany({
+        include: {
+          animals: true,
+          food: true,
+        },
+      });
+
+      // const animals = await prisma.animal.findMany({
+
+      // });
+      //   const payload = animals.map((animal) => animalPayload(animal));
+
+      // const animalPayload = shelters.map(());
+
+      // const payload = shelters.map((shelter) => shelterWithAnimalsAndFood(shelters, shelter.animals, shelter.foods));
+
+      // const payload = shelters.map((shelter) => shelterPayload(shelter));
+
+      // const payload = res.map(shelter => ({
+      //   id: shelter.id,
+      //   name: shelter.name,
+      //   location: shelter.location,
+      //   phone: shelter.phone,
+      //   email: shelter.email,
+      //   capacity: shelter.capacity,
+      //   longitude: shelter.longitude,
+      //   latitude: shelter.latitude,
+      //   createdAt: shelter.created_at,
+      //   updatedAt: shelter.updated_at,
+      // }));
+      return shelters;
     } catch (error) {
       console.error(error);
       throw new TRPCError({
@@ -33,7 +63,21 @@ export const sheltersRouter = router({
             message: "Shelter not found",
           });
         }
-        return res;
+
+        const payload = {
+          id: res.id,
+          name: res.name,
+          location: res.location,
+          phone: res.phone,
+          email: res.email,
+          capacity: res.capacity,
+          longitude: res.longitude,
+          latitude: res.latitude,
+          createdAt: res.created_at,
+          updatedAt: res.updated_at,
+        };
+
+        return payload;
       } catch (error) {
         console.error(error);
         throw new TRPCError({
@@ -83,9 +127,9 @@ export const sheltersRouter = router({
                   })),
                 }
               : undefined,
-            foods: input.foods
+            food: input.food
               ? {
-                  create: input.foods.map((food) => ({
+                  create: input.food.map((food) => ({
                     ...food,
                     quantity: food.quantity,
                   })),
