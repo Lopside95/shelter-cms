@@ -1,13 +1,31 @@
 import { z } from "zod";
 import { baseProcedure, prisma, router } from "@/server/trpc/init";
-import { shelter } from "@/utils/types";
-import { get } from "http";
+import { animal, shelter } from "@/utils/types";
 import { TRPCError } from "@trpc/server";
 import { shelterSchema } from "@/utils/schemas";
-import { shelterPayload, shelterWithAnimalsAndFood } from "@/utils/helpers";
+import {
+  animalPayload,
+  foodPayload,
+  shelterPayload,
+  shelterWithAnimalsAndFood,
+} from "@/utils/helpers";
 
 export const sheltersRouter = router({
-  getShelters: baseProcedure.query(async ({ ctx }) => {
+  getOnlyShelters: baseProcedure.query(async ({ ctx }) => {
+    try {
+      const shelters = await prisma.shelter.findMany();
+
+      const payload = shelters.map((shelter) => shelterPayload(shelter));
+      return payload;
+    } catch (error) {
+      console.error(error);
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Failed to fetch shelters",
+      });
+    }
+  }),
+  getSheltersWithOthers: baseProcedure.query(async ({ ctx }) => {
     try {
       const shelters = await prisma.shelter.findMany({
         include: {
@@ -16,30 +34,13 @@ export const sheltersRouter = router({
         },
       });
 
-      // const animals = await prisma.animal.findMany({
+      const payload = shelters.map((shelter) => ({
+        ...shelterPayload(shelter),
+        animals: shelter.animals.map((animal) => animalPayload(animal)),
+        food: shelter.food.map((food) => foodPayload(food)),
+      }));
 
-      // });
-      //   const payload = animals.map((animal) => animalPayload(animal));
-
-      // const animalPayload = shelters.map(());
-
-      // const payload = shelters.map((shelter) => shelterWithAnimalsAndFood(shelters, shelter.animals, shelter.foods));
-
-      // const payload = shelters.map((shelter) => shelterPayload(shelter));
-
-      // const payload = res.map(shelter => ({
-      //   id: shelter.id,
-      //   name: shelter.name,
-      //   location: shelter.location,
-      //   phone: shelter.phone,
-      //   email: shelter.email,
-      //   capacity: shelter.capacity,
-      //   longitude: shelter.longitude,
-      //   latitude: shelter.latitude,
-      //   createdAt: shelter.created_at,
-      //   updatedAt: shelter.updated_at,
-      // }));
-      return shelters;
+      return payload;
     } catch (error) {
       console.error(error);
       throw new TRPCError({
@@ -146,3 +147,55 @@ export const sheltersRouter = router({
 });
 
 export default sheltersRouter;
+
+// const shelters = await prisma.shelter.findMany({
+//   include: {
+//     animals: true,
+//     food: true,
+//   },
+// });
+
+// const payload = {
+//   shelters: shelters.map((shelter) => ({
+//     id: shelter.id,
+//     name: shelter.name,
+//     location: shelter.location,
+//     phone: shelter.phone,
+//     email: shelter.email,
+//     capacity: shelter.capacity,
+//     longitude: shelter.longitude,
+//     latitude: shelter.latitude,
+//     createdAt: shelter.created_at,
+//     updatedAt: shelter.updated_at,
+//     animals: shelter.animals,
+//     food: shelter.food,
+//   })),
+// };
+
+// const shelterStuff = shelters.map((shelter) => shelterPayload(shelter));
+
+// console.log("animals", animals);
+
+// const animals = await prisma.animal.findMany({
+
+// });
+//   const payload = animals.map((animal) => animalPayload(animal));
+
+// const animalPayload = shelters.map(());
+
+// const payload = shelters.map((shelter) => shelterWithAnimalsAndFood(shelters, shelter.animals, shelter.foods));
+
+// const payload = shelters.map((shelter) => shelterPayload(shelter));
+
+// const payload = res.map(shelter => ({
+//   id: shelter.id,
+//   name: shelter.name,
+//   location: shelter.location,
+//   phone: shelter.phone,
+//   email: shelter.email,
+//   capacity: shelter.capacity,
+//   longitude: shelter.longitude,
+//   latitude: shelter.latitude,
+//   createdAt: shelter.created_at,
+//   updatedAt: shelter.updated_at,
+// }));

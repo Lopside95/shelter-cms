@@ -34,7 +34,7 @@ export default async function ShelterPage({
 }
 
 export async function generateStaticParams() {
-  const shelters = await trpc.shelters.getShelters();
+  const shelters = await trpc.shelters.getOnlyShelters();
 
   return shelters.map((shelter) => ({
     shelter: shelter.id.toString(),

@@ -26,7 +26,11 @@ const ShelterCard = ({ shelter }: { shelter: ShelterProps }) => {
         <CardTitle>{shelter.name}</CardTitle>
         <CardDescription>{/* {desc || "Find Shelter"}  */}</CardDescription>
       </CardHeader>
-      <CardContent>{`Animals: ${animals.length}`}</CardContent>
+      <CardContent>
+        <h1>{`Animals: ${animals.length}`}</h1>
+        {animals.length && animals[0].name}
+        {/* <h2>{animals[0].name}</h2> */}
+      </CardContent>
 
       <Button onClick={() => router.push(`shelters/${shelter.id}`)}>
         Go to shelter
