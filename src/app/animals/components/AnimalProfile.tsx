@@ -1,0 +1,246 @@
+"use client";
+
+import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import {
+  ChevronLeft,
+  Pencil,
+  PawPrintIcon as Paw,
+  Calendar,
+  Building2,
+  QrCode,
+  Clock,
+  CheckCircle2,
+} from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import FeatureCard from "@/components/FeatureCard";
+import { AnimalProps } from "@/utils/types";
+
+// Mock data - replace with actual data fetching
+// const animal = {
+//   id: ",
+//   name: "Buddy",
+//   species: "Dog",
+//   breed: "Golden Retriever",
+//   age: "3 years",
+//   chipNumber: "985141000123456",
+//   shelterId: "SH-2024-123",
+//   createdAt: "2024-01-15T08:00:00Z",
+//   updatedAt: "2024-02-20T14:30:00Z",
+//   //   image: "/placeholder.svg?height=300&width=300",
+// };
+
+const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
+  // const formatDate = (date: string) => {
+  //   return format(new Date(date), "PPP 'at' pp");
+  // };
+
+  return (
+    <div className="container mx-auto p-4 space-y-6">
+      {/* Navigation */}
+      <div className="flex items-center gap-4">
+        <Link
+          href="/shelter-profile"
+          className="flex items-center text-sm text-muted-foreground hover:text-primary"
+        >
+          <ChevronLeft className="h-4 w-4 mr-1" />
+          Back to Shelter
+        </Link>
+        <Separator orientation="vertical" className="h-6" />
+        <span className="text-sm text-muted-foreground">Animal Profile</span>
+      </div>
+
+      {/* Main Profile Section */}
+      <div className="grid gap-6 md:grid-cols-[300px_1fr]">
+        <Card className="w-full">
+          <CardContent className="p-4">
+            <div className="aspect-square relative rounded-lg overflow-hidden mb-4">
+              <Image
+                src={"/placeholder.svg"}
+                alt={animal.name}
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="space-y-2 text-center">
+              <h1 className="text-2xl font-bold">{animal.name}</h1>
+              <p className="text-muted-foreground">
+                {animal.species} • {animal.breed}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="space-y-6">
+          {/* Basic Information */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-xl font-bold">
+                Basic Information
+              </CardTitle>
+              <EditAnimalDialog animal={animal} />
+            </CardHeader>
+            <CardContent className="grid gap-4 sm:grid-cols-2">
+              <FeatureCard
+                icon={<Paw className="h-4 w-4" />}
+                title="Species"
+                value={animal.species}
+              />
+              <FeatureCard
+                icon={<Paw className="h-4 w-4" />}
+                title="Breed"
+                value={animal.breed}
+              />
+              <FeatureCard
+                icon={<Calendar className="h-4 w-4" />}
+                title="Age"
+                value={animal.age}
+              />
+              <FeatureCard
+                icon={<Building2 className="h-4 w-4" />}
+                title="Shelter ID"
+                value={animal.shelterId}
+              />
+              <FeatureCard
+                icon={<QrCode className="h-4 w-4" />}
+                title="Chip Number"
+                value={animal.chipNumber}
+              />
+            </CardContent>
+          </Card>
+
+          {/* Timeline */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-bold">Timeline</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-start gap-4">
+                <div className="min-w-4">
+                  <CheckCircle2 className="h-4 w-4 text-green-500" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">Last Updated</p>
+                  <p className="text-sm text-muted-foreground">
+                    {/* <p> {animal.updatedAt}</p> */}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="min-w-4">
+                  <Clock className="h-4 w-4 text-blue-500" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">Added to System</p>
+                  <p className="text-sm text-muted-foreground">
+                    {/* {formatDate(animal.createdAt)} */}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* System Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-bold">
+                System Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-sm text-muted-foreground">Animal ID</span>
+                <span className="text-sm font-mono">{animal.id}</span>
+              </div>
+              <Separator />
+              <div className="flex justify-between">
+                <span className="text-sm text-muted-foreground">Created</span>
+                {/* <span className="text-sm">{formatDate(animal.createdAt)}</span> */}
+              </div>
+              <Separator />
+              <div className="flex justify-between">
+                <span className="text-sm text-muted-foreground">
+                  Last Updated
+                </span>
+                {/* <span className="text-sm">{formatDate(animal.updatedAt)}</span> */}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// function InfoItem({ icon, label, value, className = "" }) {
+//   return (
+//     <div className={`flex items-center gap-2 ${className}`}>
+//       <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted">{icon}</div>
+//       <div className="space-y-0.5">
+//         <p className="text-sm text-muted-foreground">{label}</p>
+//         <p className="font-medium">{value}</p>
+//       </div>
+//     </div>
+//   )
+// }
+
+function EditAnimalDialog({ animal }: { animal: AnimalProps }) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <Pencil className="h-4 w-4" />
+          <span className="sr-only">Edit animal</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Edit Animal Profile</DialogTitle>
+          <DialogDescription>
+            Make changes to the animal&apos;s profile information here.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid gap-2">
+            <Label htmlFor="name">Name</Label>
+            <Input id="name" defaultValue={animal.name} />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="species">Species</Label>
+            <Input id="species" defaultValue={animal.species} />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="breed">Breed</Label>
+            <Input id="breed" defaultValue={animal.breed} />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="age">Age</Label>
+            <Input id="age" defaultValue={animal.age} />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="chipNumber">Chip Number</Label>
+            <Input id="chipNumber" defaultValue={animal.chipNumber} />
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <Button type="submit">Save changes</Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export default AnimalProfile;

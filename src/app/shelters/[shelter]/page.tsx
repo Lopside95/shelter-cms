@@ -1,13 +1,21 @@
 import { trpc } from "@/server/trpc/server";
 import ShelterProfile from "../pages/ShelterProfile";
-import { animal, AnimalProps, food, ShelterProps } from "@/utils/types";
+import {
+  animal,
+  AnimalProps,
+  DynamicParams,
+  food,
+  ShelterProps,
+} from "@/utils/types";
 import { Animal, Shelter } from "@prisma/client";
 
-type Params = Promise<{ shelter: string }>;
-
-export default async function ShelterPage({ params }: { params: Params }) {
+export default async function ShelterPage({
+  params,
+}: {
+  params: DynamicParams;
+}) {
   // const shelterId = params.shelter;
-  const shelterId = (await params).shelter;
+  const shelterId = (await params).params;
 
   const shelter = await trpc.shelters.getShelterById(parseInt(shelterId));
 

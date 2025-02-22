@@ -1,9 +1,9 @@
-import { baseProcedure, prisma, router } from "@/server/trpc/init";
+import { procedure, prisma, router } from "@/server/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { itemSchema } from "@/utils/schemas";
 
 export const itemsRouter = router({
-  getItems: baseProcedure.query(async () => {
+  getItems: procedure.query(async () => {
     try {
       const items = await prisma.item.findMany();
 
@@ -29,7 +29,7 @@ export const itemsRouter = router({
     }
   }),
 
-  createItem: baseProcedure.input(itemSchema).mutation(async ({ input }) => {
+  createItem: procedure.input(itemSchema).mutation(async ({ input }) => {
     try {
       const data = input;
 

@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { baseProcedure, prisma, router } from "@/server/trpc/init";
+import { procedure, prisma, router } from "@/server/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { foodSchema } from "@/utils/schemas";
 import { foodPayload } from "@/utils/helpers";
 
 export const foodRouter = router({
-  getFood: baseProcedure.query(async () => {
+  getFood: procedure.query(async () => {
     try {
       const food = await prisma.food.findMany();
       return food;
@@ -13,24 +13,22 @@ export const foodRouter = router({
       console.error(error);
     }
   }),
-  getFoodsByShelterId: baseProcedure
-    .input(z.number())
-    .query(async ({ input }) => {
-      try {
-        const food = await prisma.food.findMany({
-          where: {
-            shelter_id: input,
-          },
-        });
+  getFoodsByShelterId: procedure.input(z.number()).query(async ({ input }) => {
+    try {
+      const food = await prisma.food.findMany({
+        where: {
+          shelter_id: input,
+        },
+      });
 
-        const payload = food.map((food) => foodPayload(food));
+      const payload = food.map((food) => foodPayload(food));
 
-        return payload;
-      } catch (error) {
-        console.error(error);
-      }
-    }),
-  createFood: baseProcedure.input(foodSchema).mutation(async ({ input }) => {
+      return payload;
+    } catch (error) {
+      console.error(error);
+    }
+  }),
+  createFood: procedure.input(foodSchema).mutation(async ({ input }) => {
     try {
       const newFood = await prisma.food.create({
         data: {

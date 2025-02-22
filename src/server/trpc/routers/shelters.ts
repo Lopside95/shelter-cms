@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { baseProcedure, prisma, router } from "@/server/trpc/init";
+import { procedure, prisma, router } from "@/server/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { shelterSchema } from "@/utils/schemas";
 import { animalPayload, foodPayload, shelterPayload } from "@/utils/helpers";
 
 export const sheltersRouter = router({
-  getOnlyShelters: baseProcedure.query(async () => {
+  getOnlyShelters: procedure.query(async () => {
     try {
       const shelters = await prisma.shelter.findMany();
 
@@ -19,7 +19,7 @@ export const sheltersRouter = router({
       });
     }
   }),
-  getShelters: baseProcedure.query(async () => {
+  getShelters: procedure.query(async () => {
     try {
       const shelters = await prisma.shelter.findMany({
         include: {
@@ -43,7 +43,7 @@ export const sheltersRouter = router({
       });
     }
   }),
-  getShelterById: baseProcedure.input(z.number()).query(async ({ input }) => {
+  getShelterById: procedure.input(z.number()).query(async ({ input }) => {
     try {
       const shelter = await prisma.shelter.findUnique({
         where: {
@@ -79,7 +79,7 @@ export const sheltersRouter = router({
       });
     }
   }),
-  getShelterByName: baseProcedure.input(z.string()).query(async ({ input }) => {
+  getShelterByName: procedure.input(z.string()).query(async ({ input }) => {
     try {
       const res = await prisma.shelter.findFirst({
         where: {
@@ -95,44 +95,42 @@ export const sheltersRouter = router({
       });
     }
   }),
-  createShelter: baseProcedure
-    .input(shelterSchema)
-    .mutation(async ({ input }) => {
-      try {
-        const newShelter = await prisma.shelter.create({
-          data: {
-            capacity: input.capacity,
-            name: input.name,
-            location: input.location,
-            longitude: 1,
-            latitude: 1,
-            phone: input.phone,
-            email: input.email,
+  createShelter: procedure.input(shelterSchema).mutation(async ({ input }) => {
+    try {
+      const newShelter = await prisma.shelter.create({
+        data: {
+          capacity: input.capacity,
+          name: input.name,
+          location: input.location,
+          longitude: 1,
+          latitude: 1,
+          phone: input.phone,
+          email: input.email,
 
-            animals: input?.animals
-              ? {
-                  create: input.animals.map((animal) => ({
-                    ...animal,
-                    chip_number: animal.chipNumber,
-                  })),
-                }
-              : undefined,
-            food: input.food
-              ? {
-                  create: input.food.map((food) => ({
-                    ...food,
-                    quantity: food.quantity,
-                  })),
-                }
-              : undefined,
-          },
-        });
+          animals: input?.animals
+            ? {
+                create: input.animals.map((animal) => ({
+                  ...animal,
+                  chip_number: animal.chipNumber,
+                })),
+              }
+            : undefined,
+          food: input.food
+            ? {
+                create: input.food.map((food) => ({
+                  ...food,
+                  quantity: food.quantity,
+                })),
+              }
+            : undefined,
+        },
+      });
 
-        return newShelter;
-      } catch (error) {
-        console.error(error);
-      }
-    }),
+      return newShelter;
+    } catch (error) {
+      console.error(error);
+    }
+  }),
 });
 
 export default sheltersRouter;

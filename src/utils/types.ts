@@ -80,6 +80,8 @@ export type TextInputType = {
   cn?: string;
 };
 
+export type DynamicParams = Promise<{ id: string }>;
+
 export type Route = "items" | "animals" | "foods" | "shelters";
 
 export interface Add<T> {

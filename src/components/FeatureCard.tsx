@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 type FeatureCardProps = {
   icon: React.ReactNode;
   title: string;
-  description: string;
+  description?: string;
+  value?: number | string;
 };
 
 const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {

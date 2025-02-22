@@ -27,8 +27,6 @@ const SheltersHome = ({ shelters }: { shelters: ShelterProps[] }) => {
 
   const router = useRouter();
 
-  // const convertedShelters = shelters.map((shelter) => )
-
   const form = useForm<ShelterSchema>({
     resolver: zodResolver(shelterSchema),
     defaultValues: {

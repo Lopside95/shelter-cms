@@ -17,4 +17,4 @@ const t = initTRPC.context<Context>().create({
 
 export const router = t.router;
 export const createCallerFactory = t.createCallerFactory;
-export const baseProcedure = t.procedure;
+export const procedure = t.procedure;
