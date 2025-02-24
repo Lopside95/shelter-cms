@@ -1,11 +1,16 @@
 import React from "react";
 import Image from "next/image";
 import { AnimalProps } from "@/utils/types";
-import { Card, CardContent } from "./ui/card";
+import { Card, CardContent } from "../ui/card";
 
-const AnimalCard = ({ animal }: { animal: AnimalProps }) => {
+interface GridCardProps {
+  animal: AnimalProps;
+  onClick: (event: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => void;
+}
+
+const GridCard = ({ animal, onClick }: GridCardProps) => {
   return (
-    <Card key={animal.id}>
+    <Card className="rounded-none w-80 h-80">
       <CardContent className="p-4">
         <div className="flex items-center space-x-4">
           <Image
@@ -16,13 +21,16 @@ const AnimalCard = ({ animal }: { animal: AnimalProps }) => {
             className="rounded-full"
           />
           <div>
-            <h3 className="font-semibold">{animal.name}</h3>
+            <h3 className="font-semibold cursor-pointer" onClick={onClick}>
+              {animal.name}
+            </h3>
             <p className="text-sm text-gray-500">{animal.age}</p>
           </div>
         </div>
       </CardContent>
+      <q>1q </q>
     </Card>
   );
 };
 
-export default AnimalCard;
+export default GridCard;

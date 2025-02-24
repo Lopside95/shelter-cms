@@ -12,15 +12,16 @@ import {
 } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { shelterSchema, ShelterSchema } from "@/utils/schemas";
-import TextField from "@/components/TextFormField";
-import NumberField from "@/components/NumberField";
+import TextField from "@/components/inputs/TextFormField";
+import NumberField from "@/components/inputs/NumberField";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/app/trpc/client";
 import FindShelter from "@/components/FindShelter";
-import ShelterCard from "@/components/ShelterCard";
+import ShelterCard from "@/components/cards/ShelterCard";
 import { ShelterProps } from "@/utils/types";
 import { Shelter } from "@prisma/client";
+import { getHTTPStatusCodeFromError } from "@trpc/server/unstable-core-do-not-import";
 
 const SheltersHome = ({ shelters }: { shelters: ShelterProps[] }) => {
   const [toSearch, setToSearch] = useState<string>("");
@@ -55,13 +56,14 @@ const SheltersHome = ({ shelters }: { shelters: ShelterProps[] }) => {
   const addAnimal = async () => {
     try {
       const res = await mutateAnimal.mutateAsync({
-        name: "hmmm",
+        name: "Mr beefy",
         species: "DOG",
         age: 7,
-        chipNumber: "12345679",
-        shelterId: 1,
+        chipNumber: "123456sdfdd79",
+        shelterId: 2,
         breed: "Africanis",
       });
+
       return res;
     } catch (error) {
       console.error(error);

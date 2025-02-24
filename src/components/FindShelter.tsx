@@ -22,9 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { shelterSchema, ShelterSchema } from "@/utils/schemas";
-import TextField from "@/components/TextFormField";
-import NumberField from "@/components/NumberField";
-import TextInput from "./TextInput";
+import NumberField from "@/components/inputs/NumberField";
 import React from "react";
 
 type FindShelterProps = {

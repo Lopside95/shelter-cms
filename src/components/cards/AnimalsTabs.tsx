@@ -1,10 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Bird, Cat, Dog, Rabbit } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { AnimalProps, Species } from "@/utils/types";
 import AnimalCard from "./AnimalCard";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 const AnimalsTabs = ({ animals }: { animals: AnimalProps[] }) => {
   const [selectedAnimalType, setSelectedAnimalType] = useState<Species>("DOG");

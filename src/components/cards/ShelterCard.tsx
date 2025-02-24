@@ -1,12 +1,12 @@
 import { AnimalProps, FoodProps, ShelterProps } from "@/utils/types";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "../ui/card";
 import { useRouter } from "next/navigation";
 
 const ShelterCard = ({ shelter }: { shelter: ShelterProps }) => {

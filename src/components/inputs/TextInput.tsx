@@ -1,6 +1,6 @@
 import { TextInputType } from "@/utils/types";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
 
 const TextInput = ({
   name,

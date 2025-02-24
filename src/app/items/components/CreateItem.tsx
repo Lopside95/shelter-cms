@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { itemSchema, ItemSchema } from "@/utils/schemas";
-import TextField from "@/components/TextFormField";
-import NumberField from "@/components/NumberField";
+import TextField from "@/components/inputs/TextFormField";
+import NumberField from "@/components/inputs/NumberField";
 import { useState } from "react";
 import { ItemProps } from "@/utils/types";
 import { api } from "@/app/trpc/client";

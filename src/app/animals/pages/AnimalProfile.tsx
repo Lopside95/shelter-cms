@@ -26,31 +26,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import FeatureCard from "@/components/FeatureCard";
+import FeatureCard from "@/components/cards/FeatureCard";
 import { AnimalProps } from "@/utils/types";
 
-// Mock data - replace with actual data fetching
-// const animal = {
-//   id: ",
-//   name: "Buddy",
-//   species: "Dog",
-//   breed: "Golden Retriever",
-//   age: "3 years",
-//   chipNumber: "985141000123456",
-//   shelterId: "SH-2024-123",
-//   createdAt: "2024-01-15T08:00:00Z",
-//   updatedAt: "2024-02-20T14:30:00Z",
-//   //   image: "/placeholder.svg?height=300&width=300",
-// };
-
 const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
-  // const formatDate = (date: string) => {
-  //   return format(new Date(date), "PPP 'at' pp");
-  // };
-
   return (
     <div className="container mx-auto p-4 space-y-6">
-      {/* Navigation */}
       <div className="flex items-center gap-4">
         <Link
           href="/shelter-profile"
@@ -63,7 +44,6 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
         <span className="text-sm text-muted-foreground">Animal Profile</span>
       </div>
 
-      {/* Main Profile Section */}
       <div className="grid gap-6 md:grid-cols-[300px_1fr]">
         <Card className="w-full">
           <CardContent className="p-4">
@@ -85,7 +65,6 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
         </Card>
 
         <div className="space-y-6">
-          {/* Basic Information */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-xl font-bold">
@@ -122,7 +101,6 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
             </CardContent>
           </Card>
 
-          {/* Timeline */}
           <Card>
             <CardHeader>
               <CardTitle className="text-xl font-bold">Timeline</CardTitle>
@@ -134,9 +112,7 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
                 </div>
                 <div className="space-y-1">
                   <p className="text-sm font-medium">Last Updated</p>
-                  <p className="text-sm text-muted-foreground">
-                    {/* <p> {animal.updatedAt}</p> */}
-                  </p>
+                  <p className="text-sm text-muted-foreground"></p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
@@ -145,15 +121,12 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
                 </div>
                 <div className="space-y-1">
                   <p className="text-sm font-medium">Added to System</p>
-                  <p className="text-sm text-muted-foreground">
-                    {/* {formatDate(animal.createdAt)} */}
-                  </p>
+                  <p className="text-sm text-muted-foreground"></p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* System Information */}
           <Card>
             <CardHeader>
               <CardTitle className="text-xl font-bold">
@@ -168,14 +141,12 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
               <Separator />
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">Created</span>
-                {/* <span className="text-sm">{formatDate(animal.createdAt)}</span> */}
               </div>
               <Separator />
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">
                   Last Updated
                 </span>
-                {/* <span className="text-sm">{formatDate(animal.updatedAt)}</span> */}
               </div>
             </CardContent>
           </Card>
@@ -184,18 +155,6 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
     </div>
   );
 };
-
-// function InfoItem({ icon, label, value, className = "" }) {
-//   return (
-//     <div className={`flex items-center gap-2 ${className}`}>
-//       <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted">{icon}</div>
-//       <div className="space-y-0.5">
-//         <p className="text-sm text-muted-foreground">{label}</p>
-//         <p className="font-medium">{value}</p>
-//       </div>
-//     </div>
-//   )
-// }
 
 function EditAnimalDialog({ animal }: { animal: AnimalProps }) {
   return (

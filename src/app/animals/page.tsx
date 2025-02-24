@@ -1,24 +1,25 @@
 import { trpc } from "@/server/trpc/server";
-import { AnimalProps } from "@/utils/types";
+import { AnimalProps, shelter } from "@/utils/types";
 import Link from "next/link";
+import AnimalsHome from "./pages/AnimalsHome";
 
-const AnimalsHome = async ({ animals }: { animals: AnimalProps[] }) => {
-  // const res = await trpc.animals.getAnimalById(1);
-  const res = await trpc.animals.getAnimals();
+const AnimalsHomePage = async () => {
+  // const res = await trpc.animals.getAnimals();
 
-  // console.log("res", res.data);
+  // fetch  all of the animals from all of the shelters ?
+  const shelters = await trpc.shelters.getShelters();
 
-  if (!res.data) {
-    return <div>No animals found</div>;
+  const allAnimals = shelters.map((shelter) => {
+    return shelter.animals;
+  });
+
+  const animals = allAnimals.flat();
+
+  if (!shelters) {
+    return <div>No shelters found</div>;
   }
 
-  const ani = res.data[0];
-
-  return (
-    <div>
-      <Link href={`/animals/${ani.id as number}`}>Go</Link>
-    </div>
-  );
+  return <AnimalsHome animals={animals} />;
 };
 
-export default AnimalsHome;
+export default AnimalsHomePage;

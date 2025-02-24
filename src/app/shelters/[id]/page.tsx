@@ -14,8 +14,7 @@ export default async function ShelterPage({
 }: {
   params: DynamicParams;
 }) {
-  // const shelterId = params.shelter;
-  const shelterId = (await params).params;
+  const shelterId = (await params).id;
 
   const shelter = await trpc.shelters.getShelterById(parseInt(shelterId));
 

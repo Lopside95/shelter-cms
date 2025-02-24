@@ -4,6 +4,8 @@ import { TRPCError } from "@trpc/server";
 import { animalSchema } from "@/utils/schemas";
 import { animalPayload } from "@/utils/helpers";
 import { TRPCClientError } from "@trpc/client";
+import { get } from "http";
+import { getHTTPStatusCodeFromError } from "@trpc/server/unstable-core-do-not-import";
 
 export const animalsRouter = router({
   getAnimals: procedure.query(async ({ ctx }) => {
@@ -14,7 +16,7 @@ export const animalsRouter = router({
       return {
         message: "Animals fetched successfully",
         data: payload,
-        // count: animals.length,
+        count: animals.length,
       };
     } catch (error: unknown) {
       if (error instanceof TRPCError) {
@@ -31,8 +33,6 @@ export const animalsRouter = router({
 
       const theError = error as Error;
       console.log("theError", theError);
-      // const cause = theError.cause;
-      // console.log("cause", cause);
 
       throw new Error(`Failed to create animal: ${(error as Error).message}`);
     }
@@ -92,6 +92,18 @@ export const animalsRouter = router({
     .input(animalSchema)
     .mutation(async ({ input, ctx }) => {
       try {
+        const existingAnimal = await prisma.animal.findUnique({
+          where: {
+            chip_number: input.chipNumber,
+          },
+        });
+
+        if (existingAnimal) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "An animal with that chip number already exists.",
+          });
+        }
         const newAnimal = await prisma.animal.create({
           data: {
             chip_number: input.chipNumber,
@@ -105,7 +117,17 @@ export const animalsRouter = router({
 
         return newAnimal;
       } catch (error: unknown) {
+        // const httpCode = getHTTPStatusCodeFromError(error as TRPCError);
+        // console.log("httpCode", httpCode);
         if (error instanceof TRPCError) {
+          if (error.code === "CONFLICT") {
+            throw new TRPCError({
+              code: "CONFLICT",
+              message: `An animal with that chip number already exists.`,
+              cause: error.cause,
+            });
+          }
+
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: `TRPC ERROR: ${error.message}`,
@@ -113,14 +135,14 @@ export const animalsRouter = router({
         }
         if (error instanceof TRPCClientError) {
           throw new TRPCClientError(
-            ("There was an error: " + error.message) as string
+            ("There was a TRPCClientError, error message: " +
+              error.message) as string,
+            error.meta
           );
         }
 
         const theError = error as Error;
         console.log("theError", theError);
-        // const cause = theError.cause;
-        // console.log("cause", cause);
 
         throw new Error(`Failed to create animal: ${(error as Error).message}`);
       }

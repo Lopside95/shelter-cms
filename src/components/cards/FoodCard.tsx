@@ -1,5 +1,5 @@
-import { Card, CardContent } from "./ui/card";
-import { Badge } from "./ui/badge";
+import { Card, CardContent } from "../ui/card";
+import { Badge } from "../ui/badge";
 import { FoodProps } from "@/utils/types";
 
 const FoodCard = ({ food }: { food: FoodProps }) => {

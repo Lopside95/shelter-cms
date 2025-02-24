@@ -7,7 +7,7 @@ import { api } from "./trpc/client";
 import Navbar from "@/components/Nav";
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense, useState, useEffect } from "react";
-import FeatureCard from "@/components/FeatureCard";
+import FeatureCard from "@/components/cards/FeatureCard";
 
 const LandingPage = () => {
   // const [shelters, setShelters] = useState();
@@ -21,11 +21,6 @@ const LandingPage = () => {
   console.log("shelters", shelters.data);
 
   return (
-    // <TRPCProvider>
-    //   <HydrateClient>
-    //     <Navbar />
-    //     <ErrorBoundary fallback={<div>Something went wrong</div>}>
-    //       <Suspense fallback={<div>Loading...</div>}>
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center">
         <nav className="ml-auto flex gap-4 sm:gap-6">
@@ -168,10 +163,6 @@ const LandingPage = () => {
         </nav>
       </footer>
     </div>
-    //       </Suspense>
-    //     </ErrorBoundary>
-    //   </HydrateClient>
-    // </TRPCProvider>
   );
 };
 

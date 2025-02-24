@@ -1,11 +1,11 @@
 "use client";
 import ShelterInfo from "@/components/ShelterInfo";
 import EditShelterContact from "@/components/EditShelterContact";
-import AnimalsTabs from "@/components/AnimalsTabs";
 import { ShelterProps } from "@/utils/types";
-import FoodCard from "@/components/FoodCard";
 import { api } from "@/app/trpc/client";
 import { Button } from "@/components/ui/button";
+import AnimalsTabs from "@/components/cards/AnimalsTabs";
+import FoodCard from "@/components/cards/FoodCard";
 
 const ShelterProfile = ({ shelter }: { shelter: ShelterProps }) => {
   const { animals, food } = shelter;

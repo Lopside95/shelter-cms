@@ -6,9 +6,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
+} from "../ui/form";
 import { useFormContext } from "react-hook-form";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 
 const TextField = ({ name, type, label, desc, placeholder, cn }: FormInput) => {
   const { control } = useFormContext();

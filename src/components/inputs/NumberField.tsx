@@ -6,9 +6,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
+} from "../ui/form";
 import { useFormContext } from "react-hook-form";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 
 const NumberField = ({ name, type, label, desc }: FormInput) => {
   const { control } = useFormContext();
