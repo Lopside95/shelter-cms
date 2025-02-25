@@ -90,6 +90,7 @@ const SheltersHome = ({ shelters }: { shelters: ShelterProps[] }) => {
       <Button className="w-80" onClick={makeFood}>
         Make Food
       </Button>
+      <div>TESTING</div>
       <Button className="w-80" onClick={addAnimal}>
         Add animal
       </Button>

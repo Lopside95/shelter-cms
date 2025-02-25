@@ -17,6 +17,7 @@ import NumberField from "@/components/inputs/NumberField";
 import { useState } from "react";
 import { ItemProps } from "@/utils/types";
 import { api } from "@/app/trpc/client";
+import { uploadPhoto } from "@/utils/utils";
 
 const CreateItem = ({ items }: { items: ItemProps[] }) => {
   const form = useForm<ItemSchema>({
@@ -26,6 +27,16 @@ const CreateItem = ({ items }: { items: ItemProps[] }) => {
       quantity: 0,
     },
   });
+
+  const [photo, setPhoto] = useState<string | null>(null);
+
+  const handleUploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const url = await uploadPhoto(file, `animals`);
+      setPhoto(url);
+    }
+  };
 
   const createItem = api.items.createItem.useMutation();
 
@@ -42,6 +53,10 @@ const CreateItem = ({ items }: { items: ItemProps[] }) => {
 
   return (
     <div className=" mx-auto py-10">
+      <div>
+        <input type="file" accept="image/*" onChange={handleUploadPhoto} />
+        <Button onClick={() => handleUploadPhoto}>Upload Photo</Button>
+      </div>
       <Card className=" w-3/4 px-20 mx-auto">
         <CardHeader>
           <CardTitle>Create New Item</CardTitle>

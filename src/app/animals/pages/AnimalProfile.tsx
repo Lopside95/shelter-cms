@@ -1,6 +1,5 @@
 "use client";
 
-import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -94,6 +93,10 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
                 title="Species"
                 value={animal.species}
               />
+              <div>
+                <Button>Upload</Button>
+                <input type="file" accept="image/*" />
+              </div>
               <FeatureCard
                 icon={<Paw className="h-4 w-4" />}
                 title="Breed"

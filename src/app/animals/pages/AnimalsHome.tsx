@@ -15,6 +15,7 @@ const AnimalsHome = ({ animals }: { animals: AnimalProps[] }) => {
 
   return (
     <div className="flex flex-wrap p-3">
+      <div>Hello</div>
       {animals.map((animal) => {
         return (
           <GridCard
