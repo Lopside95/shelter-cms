@@ -28,8 +28,20 @@ import Link from "next/link";
 import Image from "next/image";
 import FeatureCard from "@/components/cards/FeatureCard";
 import { AnimalProps } from "@/utils/types";
+import { useState } from "react";
+import { uploadPhoto } from "@/utils/utils";
 
 const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
+  const [photo, setPhoto] = useState<string | null>(null);
+
+  const handleUploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const url = await uploadPhoto(file, `animals/${animal.id}`);
+      setPhoto(url);
+    }
+  };
+
   return (
     <div className="container mx-auto p-4 space-y-6">
       <div className="flex items-center gap-4">
@@ -65,6 +77,10 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
         </Card>
 
         <div className="space-y-6">
+          <div>
+            <input type="file" accept="image/*" onChange={handleUploadPhoto} />
+            <Button onClick={() => handleUploadPhoto}>Upload Photo</Button>
+          </div>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-xl font-bold">

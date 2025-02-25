@@ -4,6 +4,8 @@ import { procedure, router } from "@/server/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { TRPCClientError } from "@trpc/client";
 import { TRPC_ERROR_CODE_KEY } from "@trpc/server/unstable-core-do-not-import";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "@/firebase";
 
 interface ConflictError {
   input: ZodSchema | string | number;
@@ -29,6 +31,16 @@ ConflictError) => {
     message: `Conflict found for ${input as string}`,
     // cause: new Error(message),
   });
+};
+
+export const uploadPhoto = async (
+  file: File,
+  path: string
+): Promise<string> => {
+  const storageRef = ref(storage, path);
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+  return url;
 };
 
 // export const isConflictError = async <T>(
