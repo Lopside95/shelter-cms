@@ -1,7 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
+import {
+  FormProvider,
+  SubmitErrorHandler,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -120,7 +125,7 @@ const SheltersHome = ({ shelters }: { shelters: ShelterProps[] }) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
+          <FormProvider {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className="flex flex-wrap"
@@ -151,7 +156,7 @@ const SheltersHome = ({ shelters }: { shelters: ShelterProps[] }) => {
                 Create Shelter
               </Button>
             </form>
-          </Form>
+          </FormProvider>
         </CardContent>
       </Card>
 

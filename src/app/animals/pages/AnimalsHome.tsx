@@ -1,5 +1,6 @@
 "use client";
 
+import AddAnimalForm from "@/app/shelters/components/AddAnimalForm";
 import GridCard from "@/components/cards/GridCard";
 import { AnimalProps } from "@/utils/types";
 import { Link } from "lucide-react";
@@ -16,6 +17,7 @@ const AnimalsHome = ({ animals }: { animals: AnimalProps[] }) => {
   return (
     <div className="flex flex-wrap p-3">
       <div>Hello</div>
+      {/* <AddAnimalForm /> */}
       {animals.map((animal) => {
         return (
           <GridCard

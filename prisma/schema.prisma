@@ -35,6 +35,7 @@ model Animal {
   shelter_id  Int
   shelter    Shelter?  @relation(fields: [shelter_id], references: [id])
   breed      String
+  image      String
 }
 
 model Shelter {

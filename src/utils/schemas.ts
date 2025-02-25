@@ -14,6 +14,7 @@ export const animalSchema = z.object({
   chipNumber: z.string().min(1, { message: "Chip number is required" }),
   shelterId: z.number().optional(),
   breed: z.string().min(1, { message: "Breed is required" }),
+  image: z.string().optional(),
 });
 
 export const foodSchema = z.object({

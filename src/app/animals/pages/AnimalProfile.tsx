@@ -28,7 +28,7 @@ import Image from "next/image";
 import FeatureCard from "@/components/cards/FeatureCard";
 import { AnimalProps } from "@/utils/types";
 import { useState } from "react";
-import { uploadPhoto } from "@/utils/utils";
+import { uploadPhoto } from "@/utils/helpers";
 
 const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
   const [photo, setPhoto] = useState<string | null>(null);
@@ -66,6 +66,14 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
                 className="object-cover"
               />
             </div>
+            <div>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={handleUploadPhoto}
+              />
+              <Button onClick={() => handleUploadPhoto}>Upload Photo</Button>
+            </div>
             <div className="space-y-2 text-center">
               <h1 className="text-2xl font-bold">{animal.name}</h1>
               <p className="text-muted-foreground">
@@ -76,10 +84,6 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
         </Card>
 
         <div className="space-y-6">
-          <div>
-            <input type="file" accept="image/*" onChange={handleUploadPhoto} />
-            <Button onClick={() => handleUploadPhoto}>Upload Photo</Button>
-          </div>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-xl font-bold">
@@ -93,10 +97,6 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
                 title="Species"
                 value={animal.species}
               />
-              <div>
-                <Button>Upload</Button>
-                <input type="file" accept="image/*" />
-              </div>
               <FeatureCard
                 icon={<Paw className="h-4 w-4" />}
                 title="Breed"

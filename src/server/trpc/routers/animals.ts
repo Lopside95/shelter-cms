@@ -112,6 +112,7 @@ export const animalsRouter = router({
             breed: input.breed,
             age: input.age,
             shelter_id: input.shelterId,
+            image: input.image || "",
           },
         });
 
