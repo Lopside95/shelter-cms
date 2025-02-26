@@ -106,7 +106,6 @@ export const sheltersRouter = router({
           latitude: 1,
           phone: input.phone,
           email: input.email,
-
           animals: input?.animals
             ? {
                 create: input.animals.map((animal) => ({

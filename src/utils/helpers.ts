@@ -65,6 +65,7 @@ export const animalPayload = (animal: Animal) => {
     shelterId: animal.shelter_id,
     createdAt: animal.created_at,
     updatedAt: animal.updated_at,
+    image: animal.image,
   };
 };
 

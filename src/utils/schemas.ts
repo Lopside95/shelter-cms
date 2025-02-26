@@ -42,5 +42,4 @@ export const shelterSchema = z.object({
 export type AnimalSchema = z.infer<typeof animalSchema>;
 export type ShelterSchema = z.infer<typeof shelterSchema>;
 export type FoodSchema = z.infer<typeof foodSchema>;
-
 export type ItemSchema = z.infer<typeof itemSchema>;

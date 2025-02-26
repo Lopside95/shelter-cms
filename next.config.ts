@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   crossOrigin: "anonymous",
+  images: {
+    domains: ["localhost", "firebasestorage.googleapis.com"],
+  },
 };
 
 export default nextConfig;

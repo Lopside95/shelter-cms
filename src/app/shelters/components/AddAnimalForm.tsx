@@ -43,11 +43,7 @@ const AddAnimalForm = ({ shelterId }: { shelterId: number }) => {
         data.image = url;
       }
 
-      console.log("data", data);
-
       const res = await mutateAnimal.mutateAsync(data);
-
-      console.log("res", res);
 
       return res;
     } catch (error) {
@@ -68,8 +64,6 @@ const AddAnimalForm = ({ shelterId }: { shelterId: number }) => {
               }
             }}
           />
-          {/* <Input type="file" accept="image/*" onChange={handleUploadPhoto} /> */}
-          {/* <Button onClick={() => handleUploadPhoto}>Upload Photo</Button> */}
         </div>
         <Card className="flex p-4 flex-wrap gap-4">
           <TextField

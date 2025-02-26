@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { AnimalProps } from "@/utils/types";
 import { Card, CardContent } from "../ui/card";
+import { Dog, Loader2 } from "lucide-react";
 
 interface GridCardProps {
   animal: AnimalProps;
@@ -14,7 +15,7 @@ const GridCard = ({ animal, onClick }: GridCardProps) => {
       <CardContent className="p-4">
         <div className="flex items-center space-x-4">
           <Image
-            src={"/placeholder.svg"}
+            src={animal.image}
             alt={animal.name}
             width={100}
             height={100}

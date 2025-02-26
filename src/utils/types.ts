@@ -18,6 +18,7 @@ export const animal = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   breed: z.string(),
+  image: z.string(),
 });
 
 export const food = z.object({
