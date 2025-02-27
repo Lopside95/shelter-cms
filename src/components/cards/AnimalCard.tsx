@@ -13,7 +13,7 @@ const AnimalCard = ({ animal }: { animal: AnimalProps }) => {
             alt={animal.name}
             width={100}
             height={100}
-            className="rounded-full"
+            className="rounded-sm"
           />
           <div>
             <h3 className="font-semibold">{animal.name}</h3>

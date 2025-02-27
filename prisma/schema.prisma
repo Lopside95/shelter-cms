@@ -27,12 +27,14 @@ model Item {
 model Animal {
   id         Int      @id @default(autoincrement()) 
   name       String   @db.VarChar(255)
-  species    String   @db.VarChar(255)
+  species    Species
+  // species    String   @db.VarChar(255)
   age        Int
   chip_number String   @unique
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
-  shelter_id  Int
+  shelter_id  Int?
+  condition  Condition
   shelter    Shelter?  @relation(fields: [shelter_id], references: [id])
   breed      String
   image      String
@@ -75,4 +77,12 @@ enum Condition {
 enum Role {
   USER
   ADMIN
+}
+
+enum Species {
+  DOG
+  CAT
+  BIRD
+  RABBIT
+  OTHER
 }

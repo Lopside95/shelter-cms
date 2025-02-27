@@ -2,7 +2,7 @@ import { z } from "zod";
 import { procedure, prisma, router } from "@/server/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { shelterSchema } from "@/utils/schemas";
-import { animalPayload, foodPayload, shelterPayload } from "@/utils/helpers";
+import { animalPayload, foodPayload, shelterPayload } from "@/utils/types";
 
 export const sheltersRouter = router({
   getOnlyShelters: procedure.query(async () => {
@@ -16,6 +16,31 @@ export const sheltersRouter = router({
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "Failed to fetch shelters",
+      });
+    }
+  }),
+  getOnlyShelterById: procedure.input(z.number()).query(async ({ input }) => {
+    try {
+      const shelter = await prisma.shelter.findUnique({
+        where: {
+          id: input,
+        },
+      });
+      if (!shelter) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Shelter not found",
+        });
+      }
+
+      const payload = shelterPayload(shelter);
+
+      return payload;
+    } catch (error) {
+      console.error(error);
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to fetch shelter by ID",
       });
     }
   }),

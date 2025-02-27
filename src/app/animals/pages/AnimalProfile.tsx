@@ -25,27 +25,28 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import AnimalInfoCard from "@/components/cards/AnimalInfoCard";
+import { AnimalProps, ShelterProps } from "@/utils/types";
 import FeatureCard from "@/components/cards/FeatureCard";
-import { AnimalProps } from "@/utils/types";
-import { useState } from "react";
-import { uploadPhoto } from "@/utils/helpers";
 
-const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
-  const [photo, setPhoto] = useState<string | null>(null);
+// interface AnimalProfileProps {
+//   animal: AnimalProps;
+//   shelterName: string;
+// }
 
-  const handleUploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const url = await uploadPhoto(file, `animals/${animal.id}`);
-      setPhoto(url);
-    }
-  };
+type AnimalProfileProps = {
+  animal: AnimalProps;
+  shelter: ShelterProps | null;
+};
+
+const AnimalProfile = ({ data }: { data: AnimalProfileProps }) => {
+  const { animal, shelter } = data;
 
   return (
     <div className="container mx-auto p-4 space-y-6">
       <div className="flex items-center gap-4">
         <Link
-          href="/shelter-profile"
+          href="/shelters"
           className="flex items-center text-sm text-muted-foreground hover:text-primary"
         >
           <ChevronLeft className="h-4 w-4 mr-1" />
@@ -66,14 +67,6 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
                 className="object-cover"
               />
             </div>
-            <div>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={handleUploadPhoto}
-              />
-              <Button onClick={() => handleUploadPhoto}>Upload Photo</Button>
-            </div>
             <div className="space-y-2 text-center">
               <h1 className="text-2xl font-bold">{animal.name}</h1>
               <p className="text-muted-foreground">
@@ -92,26 +85,37 @@ const AnimalProfile = ({ animal }: { animal: AnimalProps }) => {
               <EditAnimalDialog animal={animal} />
             </CardHeader>
             <CardContent className="grid gap-4 sm:grid-cols-2">
-              <FeatureCard
+              <AnimalInfoCard
                 icon={<Paw className="h-4 w-4" />}
                 title="Species"
-                value={animal.species}
+                species={animal.species}
+                breed={animal.breed}
+                // value={animal.species}
               />
-              <FeatureCard
+              {/* <AnimalInfoCard
                 icon={<Paw className="h-4 w-4" />}
                 title="Breed"
                 value={animal.breed}
-              />
+              /> */}
               <FeatureCard
                 icon={<Calendar className="h-4 w-4" />}
                 title="Age"
                 value={animal.age}
               />
-              <FeatureCard
-                icon={<Building2 className="h-4 w-4" />}
-                title="Shelter ID"
-                value={animal.shelterId}
-              />
+              {animal.shelterId ? (
+                <FeatureCard
+                  icon={<Building2 className="h-4 w-4" />}
+                  title="Shelter"
+                  value={animal.shelterId}
+                  description={shelter?.name}
+                />
+              ) : (
+                <FeatureCard
+                  icon={<Building2 className="h-4 w-4" />}
+                  title="Shelter ID"
+                  value="No Shelter"
+                />
+              )}
               <FeatureCard
                 icon={<QrCode className="h-4 w-4" />}
                 title="Chip Number"

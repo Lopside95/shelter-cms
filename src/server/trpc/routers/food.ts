@@ -2,7 +2,7 @@ import { z } from "zod";
 import { procedure, prisma, router } from "@/server/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { foodSchema } from "@/utils/schemas";
-import { foodPayload } from "@/utils/helpers";
+import { foodPayload } from "@/utils/types";
 
 export const foodRouter = router({
   getFood: procedure.query(async () => {

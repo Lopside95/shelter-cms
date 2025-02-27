@@ -1,5 +1,5 @@
 import { trpc } from "@/server/trpc/server";
-import { animal, AnimalProps, DynamicParams } from "@/utils/types";
+import { AnimalProps, DynamicParams } from "@/utils/types";
 import AnimalProfile from "../pages/AnimalProfile";
 
 const AnimalProfilePage = async ({ params }: { params: DynamicParams }) => {
@@ -14,9 +14,19 @@ const AnimalProfilePage = async ({ params }: { params: DynamicParams }) => {
       </div>
     );
   }
-  const animal = res?.data as AnimalProps;
 
-  return <AnimalProfile animal={animal} />;
+  const animal = res?.data;
+  // const animal = res?.data.animal as AnimalProps;
+
+  type AnimalType = typeof animal;
+
+  const data = res.data;
+
+  const load = animal as AnimalType;
+
+  console.log("res.data", res.data);
+
+  return <AnimalProfile data={data} />;
 };
 
 export default AnimalProfilePage;

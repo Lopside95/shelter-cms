@@ -1,10 +1,14 @@
 "use client";
 
 import AddAnimalForm from "@/app/shelters/components/AddAnimalForm";
+import { api } from "@/app/trpc/client";
+import GenericGridProps from "@/components/cards/GenericGridCard";
 import GridCard from "@/components/cards/GridCard";
-import { AnimalProps } from "@/utils/types";
+import { AnimalProps, ShelterProps } from "@/utils/types";
 import { Link } from "lucide-react";
 import { useRouter } from "next/navigation";
+
+export type AnimalWithShelter = AnimalProps & { shelterName: string };
 
 const AnimalsHome = ({ animals }: { animals: AnimalProps[] }) => {
   const router = useRouter();
@@ -13,6 +17,8 @@ const AnimalsHome = ({ animals }: { animals: AnimalProps[] }) => {
 
     // console.log("clicked");
   };
+
+  console.log("animals", animals);
 
   return (
     <div className="flex flex-wrap p-3">

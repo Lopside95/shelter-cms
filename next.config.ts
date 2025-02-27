@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   crossOrigin: "anonymous",
   images: {
-    domains: ["localhost", "firebasestorage.googleapis.com"],
+    domains: ["localhost", "firebasestorage.googleapis.com", "images.dog.ceo"],
   },
 };
 

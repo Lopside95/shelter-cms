@@ -2,10 +2,8 @@ import { z } from "zod";
 import { procedure, prisma, router } from "@/server/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { animalSchema } from "@/utils/schemas";
-import { animalPayload } from "@/utils/helpers";
 import { TRPCClientError } from "@trpc/client";
-import { get } from "http";
-import { getHTTPStatusCodeFromError } from "@trpc/server/unstable-core-do-not-import";
+import { animalPayload, shelterPayload } from "@/utils/types";
 
 export const animalsRouter = router({
   getAnimals: procedure.query(async ({ ctx }) => {
@@ -13,6 +11,50 @@ export const animalsRouter = router({
       const animals = await prisma.animal.findMany();
 
       const payload = animals.map((animal) => animalPayload(animal));
+
+      return {
+        message: "Animals fetched successfully",
+        data: payload,
+        count: animals.length,
+      };
+    } catch (error: unknown) {
+      if (error instanceof TRPCError) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `TRPC ERROR: ${error.message}`,
+        });
+      }
+      if (error instanceof TRPCClientError) {
+        throw new TRPCClientError(
+          ("There was an error: " + error.message) as string
+        );
+      }
+
+      const theError = error as Error;
+      console.log("theError", theError);
+
+      throw new Error(`Failed to create animal: ${(error as Error).message}`);
+    }
+  }),
+  getAnimalsAndShelters: procedure.query(async ({ ctx }) => {
+    try {
+      const animals = await prisma.animal.findMany({
+        include: {
+          shelter: true,
+        },
+      });
+
+      const payload = animals.map((animal) => {
+        return {
+          animal: animalPayload(animal),
+          shelter: animal.shelter ? shelterPayload(animal.shelter) : null,
+        };
+
+        // const animalDetails = animalPayload(animal);
+        // const shelterDetails = animal.shelter
+        //   ? shelterPayload(animal.shelter)
+        //   : null;
+      });
       return {
         message: "Animals fetched successfully",
         data: payload,
@@ -38,12 +80,13 @@ export const animalsRouter = router({
     }
   }),
   getAnimalById: procedure.input(z.number()).query(async ({ input }) => {
-    console.log("input", input);
-
     try {
       const animal = await prisma.animal.findUnique({
         where: {
           id: input,
+        },
+        include: {
+          shelter: true,
         },
       });
 
@@ -54,7 +97,35 @@ export const animalsRouter = router({
         });
       }
 
-      const payload = animalPayload(animal);
+      const animalDetails = animalPayload(animal);
+      const shelterDetails = animal.shelter
+        ? shelterPayload(animal.shelter)
+        : null;
+      // const shelter = () => {
+      //   if (animal.shelter_id !== null) {
+      //     return prisma.shelter.findUnique({
+      //       where: {
+      //         id: animal.shelter_id,
+      //       },
+      //     });
+      //   }
+      // };
+
+      // if (animal.shelter_id !== null) {
+      //   const shelter = await prisma.shelter.findUnique({
+      //     where: {
+      //       id: animal.shelter_id,
+      //     },
+      //   });
+
+      //   return shelter
+      // }
+
+      const payload = {
+        animal: animalDetails,
+        shelter: shelterDetails,
+        // shelterName: shelter?.name || "No Shelter",
+      };
 
       return {
         message: "Animal fetched by id",
@@ -113,6 +184,7 @@ export const animalsRouter = router({
             age: input.age,
             shelter_id: input.shelterId,
             image: input.image || "",
+            condition: input.condition || "HEALTHY",
           },
         });
 

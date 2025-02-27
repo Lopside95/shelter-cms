@@ -61,12 +61,14 @@ const SheltersHome = ({ shelters }: { shelters: ShelterProps[] }) => {
   const addAnimal = async () => {
     try {
       const res = await mutateAnimal.mutateAsync({
-        name: "Mr beefy",
+        name: "Steve",
         species: "DOG",
         age: 7,
-        chipNumber: "123456sdfdd79",
-        shelterId: 2,
-        breed: "Africanis",
+        chipNumber: "123",
+        shelterId: 1,
+        breed: "Beagle",
+        condition: "HEALTHY",
+        image: "https://images.dog.ceo/breeds/african/images.jpg",
       });
 
       return res;

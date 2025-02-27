@@ -1,5 +1,5 @@
+import { Condition, Species } from "@prisma/client";
 import z from "zod";
-import { animal, food } from "./types";
 
 export const itemSchema = z.object({
   itemName: z.string().min(1, { message: "Item name is required" }),
@@ -9,12 +9,19 @@ export const itemSchema = z.object({
 export const animalSchema = z.object({
   id: z.number().optional(),
   name: z.string().min(1, { message: "Name is required" }),
-  species: z.string().min(1, { message: "Species is required" }),
+  species: z.enum([Species.DOG, Species.CAT, Species.RABBIT, Species.BIRD]),
+  // species: z.string().min(1, { message: "Species is required" }),
   age: z.number().min(1, { message: "Age is required" }),
   chipNumber: z.string().min(1, { message: "Chip number is required" }),
   shelterId: z.number().optional(),
   breed: z.string().min(1, { message: "Breed is required" }),
   image: z.string().optional(),
+  condition: z.enum([
+    Condition.HEALTHY,
+    Condition.SICK,
+    Condition.INJURED,
+    Condition.DISABLED,
+  ]),
 });
 
 export const foodSchema = z.object({
@@ -34,9 +41,8 @@ export const shelterSchema = z.object({
   // longitude: z.number().min(-180).max(180),
   // latitude: z.number().min(-90).max(90),
   capacity: z.number().min(0, "Capacity must be a positive number"),
-
-  animals: z.array(animal).optional(),
-  food: z.array(food).optional(),
+  animals: z.array(animalSchema).optional(),
+  food: z.array(foodSchema).optional(),
 });
 
 export type AnimalSchema = z.infer<typeof animalSchema>;
