@@ -1,6 +1,7 @@
 "use client";
 
 import { api } from "@/app/trpc/client";
+import ImageUpload from "@/components/ImageUpload";
 import NumberField from "@/components/inputs/NumberField";
 import TextField from "@/components/inputs/TextFormField";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,8 @@ import { Input } from "@/components/ui/input";
 import { uploadPhoto } from "@/utils/helpers";
 import { AnimalSchema, animalSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { Condition } from "@prisma/client";
+import { useEffect, useState } from "react";
 import {
   FormProvider,
   SubmitErrorHandler,
@@ -17,16 +19,28 @@ import {
   useForm,
 } from "react-hook-form";
 
-const AddAnimalForm = ({ shelterId }: { shelterId: number }) => {
+type ShelterData = {
+  shelterId: number;
+  shelterName: string;
+  animalsLength: number;
+};
+
+const AddAnimalForm = ({
+  shelterId,
+  shelterName,
+  animalsLength,
+}: ShelterData) => {
   const form = useForm<AnimalSchema>({
     resolver: zodResolver(animalSchema),
     defaultValues: {
-      name: "",
-      species: "",
-      breed: "",
-      age: 0,
+      name: "Athena2",
+      condition: "HEALTHY",
+      // species: "",
+      species: "DOG",
+      breed: "Africanis",
+      age: 7,
       shelterId: shelterId,
-      chipNumber: "",
+      chipNumber: "32149-ud1208",
       image: "",
     },
   });
@@ -36,10 +50,28 @@ const AddAnimalForm = ({ shelterId }: { shelterId: number }) => {
 
   const mutateAnimal = api.animals.createAnimal.useMutation();
 
+  useEffect(() => {
+    console.log("file useff", file);
+  }, [file]);
+
+  const onError: SubmitErrorHandler<AnimalSchema> = (errors) => {
+    console.error(errors);
+  };
+
+  const { errors } = form.formState;
+
+  useEffect(() => {
+    console.log("errors", errors);
+  }, [form.formState.errors]);
+
   const onSubmit: SubmitHandler<AnimalSchema> = async (data: AnimalSchema) => {
     try {
       if (file !== null) {
-        const url = await uploadPhoto(file, `/images/${animalName}`);
+        const url = await uploadPhoto(
+          file,
+          `/images/${shelterId}/${animalName}/${file.name}`
+        );
+
         data.image = url;
       }
 
@@ -54,17 +86,6 @@ const AddAnimalForm = ({ shelterId }: { shelterId: number }) => {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div>
-          <Input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              if (e.target.files) {
-                setFile(e.target.files[0]);
-              }
-            }}
-          />
-        </div>
         <Card className="flex p-4 flex-wrap gap-4">
           <TextField
             name="name"
@@ -80,6 +101,36 @@ const AddAnimalForm = ({ shelterId }: { shelterId: number }) => {
           />
           <NumberField name="age" label="Age" placeholder="Age" />
           <NumberField name="shelterId" label="Shelter" />
+          {Object.values(Condition).map((condition) => (
+            <label key={condition} className="flex items-center">
+              <Input
+                type="radio"
+                value={condition}
+                {...form.register("condition")}
+              />
+              {condition}
+            </label>
+          ))}
+          <div className="">
+            <ImageUpload
+              file={file || undefined}
+              setFile={setFile}
+              // onUpload={() => {
+              //   setFile(file);
+              //   console.log("file", file);
+              // }}
+            />
+
+            {/* <Input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              if (e.target.files) {
+                setFile(e.target.files[0]);
+              }
+            }}
+          /> */}
+          </div>
 
           <Button type="submit">Add Animal</Button>
         </Card>

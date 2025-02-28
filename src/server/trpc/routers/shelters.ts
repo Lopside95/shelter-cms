@@ -136,6 +136,7 @@ export const sheltersRouter = router({
                 create: input.animals.map((animal) => ({
                   ...animal,
                   chip_number: animal.chipNumber,
+                  image: animal.image || "/icons/dog.png",
                 })),
               }
             : undefined,

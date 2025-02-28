@@ -1,13 +1,6 @@
 import { trpc } from "@/server/trpc/server";
 import ShelterProfile from "../pages/ShelterProfile";
-import {
-  animal,
-  AnimalProps,
-  DynamicParams,
-  food,
-  ShelterProps,
-} from "@/utils/types";
-import { Animal, Shelter } from "@prisma/client";
+import { DynamicParams } from "@/utils/types";
 
 export default async function ShelterPage({
   params,
@@ -26,7 +19,13 @@ export default async function ShelterPage({
     );
   }
 
-  return <ShelterProfile shelter={shelter} />;
+  return (
+    <ShelterProfile
+      shelter={shelter}
+      animals={shelter.animals}
+      food={shelter.food}
+    />
+  );
 }
 
 export async function generateStaticParams() {

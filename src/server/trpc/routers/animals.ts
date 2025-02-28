@@ -49,11 +49,6 @@ export const animalsRouter = router({
           animal: animalPayload(animal),
           shelter: animal.shelter ? shelterPayload(animal.shelter) : null,
         };
-
-        // const animalDetails = animalPayload(animal);
-        // const shelterDetails = animal.shelter
-        //   ? shelterPayload(animal.shelter)
-        //   : null;
       });
       return {
         message: "Animals fetched successfully",
@@ -101,30 +96,10 @@ export const animalsRouter = router({
       const shelterDetails = animal.shelter
         ? shelterPayload(animal.shelter)
         : null;
-      // const shelter = () => {
-      //   if (animal.shelter_id !== null) {
-      //     return prisma.shelter.findUnique({
-      //       where: {
-      //         id: animal.shelter_id,
-      //       },
-      //     });
-      //   }
-      // };
-
-      // if (animal.shelter_id !== null) {
-      //   const shelter = await prisma.shelter.findUnique({
-      //     where: {
-      //       id: animal.shelter_id,
-      //     },
-      //   });
-
-      //   return shelter
-      // }
 
       const payload = {
         animal: animalDetails,
         shelter: shelterDetails,
-        // shelterName: shelter?.name || "No Shelter",
       };
 
       return {

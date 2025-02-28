@@ -28,7 +28,6 @@ model Animal {
   id         Int      @id @default(autoincrement()) 
   name       String   @db.VarChar(255)
   species    Species
-  // species    String   @db.VarChar(255)
   age        Int
   chip_number String   @unique
   created_at  DateTime @default(now())
