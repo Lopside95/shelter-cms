@@ -4,6 +4,65 @@ import { TRPCError } from "@trpc/server";
 import { animalSchema } from "@/utils/schemas";
 import { TRPCClientError } from "@trpc/client";
 import { animalPayload, shelterPayload } from "@/utils/types";
+import { PrismaClient } from "@prisma/client";
+
+const getShelterIdByAnimal = async (animalId: number, prisma: PrismaClient) => {
+  try {
+    const animal = await prisma.animal.findUnique({
+      where: {
+        id: animalId,
+      },
+    });
+
+    if (!animal) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Animal not found",
+      });
+    }
+
+    if (!animal?.shelter_id) {
+      return null;
+    }
+
+    const shelterId = animal?.shelter_id;
+    return shelterId;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getAnimalById = async (animalId: number, prisma: PrismaClient) => {
+  try {
+    const animal = await prisma.animal.findUnique({
+      where: {
+        id: animalId,
+      },
+    });
+
+    if (!animal) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Animal not found",
+      });
+    }
+
+    return {
+      message: "Animal fetched by id",
+      data: animal,
+      code: 200,
+    };
+  } catch (error) {
+    if (error instanceof TRPCError) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: `TRPC ERROR IN GET BY ID: ${error.message}`,
+        cause: error.cause,
+      });
+    }
+    console.error({ "Couldn't fetch animal by ID": error });
+  }
+};
 
 export const animalsRouter = router({
   getAnimals: procedure.query(async ({ ctx }) => {
@@ -195,6 +254,56 @@ export const animalsRouter = router({
         throw new Error(`Failed to create animal: ${(error as Error).message}`);
       }
     }),
+  deleteAnimal: procedure.input(z.number()).mutation(async ({ input }) => {
+    try {
+      const animal = await getAnimalById(input, prisma);
+
+      if (!animal?.data.shelter_id) {
+        const deletedAnimal = await prisma.animal.delete({
+          where: {
+            id: input,
+          },
+        });
+
+        return {
+          message: "Animal deleted successfully",
+          data: deletedAnimal,
+          code: 200,
+        };
+      }
+
+      const shelter = await getShelterIdByAnimal(animal?.data.id, prisma);
+
+      if (shelter) {
+        await prisma.shelter.update({
+          where: {
+            id: shelter,
+          },
+          data: {
+            animals: {
+              disconnect: {
+                id: input,
+              },
+            },
+          },
+        });
+      }
+
+      const deletedAnimal = await prisma.animal.delete({
+        where: {
+          id: input,
+        },
+      });
+
+      return {
+        message: "Animal deleted successfully",
+        data: deletedAnimal,
+        code: 200,
+      };
+    } catch (error) {
+      console.error(error);
+    }
+  }),
 });
 
 export default animalsRouter;

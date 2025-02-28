@@ -11,6 +11,10 @@ const handler = (req: Request) => {
     req,
     router: appRouter,
     createContext: createTRPCContext,
+    onError: (opts) => {
+      console.error("TRPC error", opts);
+      console.log("opts", opts);
+    },
   });
 };
 

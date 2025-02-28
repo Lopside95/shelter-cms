@@ -28,6 +28,7 @@ import Image from "next/image";
 import AnimalInfoCard from "@/components/cards/AnimalInfoCard";
 import { AnimalProps, ShelterProps } from "@/utils/types";
 import FeatureCard from "@/components/cards/FeatureCard";
+import { api } from "@/app/trpc/client";
 
 // interface AnimalProfileProps {
 //   animal: AnimalProps;
@@ -41,6 +42,23 @@ type AnimalProfileProps = {
 
 const AnimalProfile = ({ data }: { data: AnimalProfileProps }) => {
   const { animal, shelter } = data;
+
+  const deleteAnimal = api.animals.deleteAnimal.useMutation();
+
+  const handleDelete = async () => {
+    try {
+      const res = await deleteAnimal.mutateAsync(animal.id);
+      console.log("delete res", res);
+
+      if (res?.code === 200) {
+        alert("Animal deleted successfully");
+      }
+
+      return res;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="container mx-auto p-4 space-y-6">
@@ -61,7 +79,7 @@ const AnimalProfile = ({ data }: { data: AnimalProfileProps }) => {
           <CardContent className="p-4">
             <div className="aspect-square relative rounded-lg overflow-hidden mb-4">
               <Image
-                src={"/placeholder.svg"}
+                src={animal.image || "/icons/dog.png"}
                 alt={animal.name}
                 fill
                 className="object-cover"
@@ -74,6 +92,16 @@ const AnimalProfile = ({ data }: { data: AnimalProfileProps }) => {
               </p>
             </div>
           </CardContent>
+          <div className="flex flex-col gap-2 p-4 items-center">
+            <Button variant="link" size="icon" onClick={handleDelete}>
+              <Pencil className="h-4 w-4" />
+              <span className="">Remove animal</span>
+            </Button>
+            <Button variant="link" size="icon">
+              {/* <Pencil className="h-4 w-4" /> */}
+              <span className="">Transfer to a different shelter</span>
+            </Button>
+          </div>
         </Card>
 
         <div className="space-y-6">
