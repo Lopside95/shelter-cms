@@ -29,6 +29,7 @@ import AnimalInfoCard from "@/components/cards/AnimalInfoCard";
 import { AnimalProps, ShelterProps } from "@/utils/types";
 import FeatureCard from "@/components/cards/FeatureCard";
 import { api } from "@/app/trpc/client";
+import { useRouter } from "next/navigation";
 
 // interface AnimalProfileProps {
 //   animal: AnimalProps;
@@ -41,6 +42,8 @@ type AnimalProfileProps = {
 };
 
 const AnimalProfile = ({ data }: { data: AnimalProfileProps }) => {
+  const router = useRouter();
+
   const { animal, shelter } = data;
 
   const deleteAnimal = api.animals.deleteAnimal.useMutation();
@@ -48,10 +51,10 @@ const AnimalProfile = ({ data }: { data: AnimalProfileProps }) => {
   const handleDelete = async () => {
     try {
       const res = await deleteAnimal.mutateAsync(animal.id);
-      console.log("delete res", res);
 
       if (res?.code === 200) {
         alert("Animal deleted successfully");
+        router.push("/animals");
       }
 
       return res;

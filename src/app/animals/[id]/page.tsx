@@ -22,10 +22,6 @@ const AnimalProfilePage = async ({ params }: { params: DynamicParams }) => {
 
   const data = res.data;
 
-  const load = animal as AnimalType;
-
-  console.log("res.data", res.data);
-
   return <AnimalProfile data={data} />;
 };
 

@@ -94,13 +94,6 @@ const SheltersHome = ({ shelters }: { shelters: ShelterProps[] }) => {
       {shelters.map((shelter) => {
         return <ShelterCard key={shelter.id} shelter={shelter} />;
       })}
-      <Button className="w-80" onClick={makeFood}>
-        Make Food
-      </Button>
-      <div>TESTING</div>
-      <Button className="w-80" onClick={addAnimal}>
-        Add animal
-      </Button>
 
       {/* <FindShelter>Hi</FindShelter> */}
       {/* <Card>
@@ -161,6 +154,14 @@ const SheltersHome = ({ shelters }: { shelters: ShelterProps[] }) => {
           </FormProvider>
         </CardContent>
       </Card>
+
+      <Button className="w-80" onClick={makeFood}>
+        Make Food
+      </Button>
+      <div>TESTING</div>
+      <Button className="w-80" onClick={addAnimal}>
+        Add animal
+      </Button>
 
       {/* <FindShelter>
         <TextInput

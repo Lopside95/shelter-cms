@@ -5,6 +5,7 @@ import { animalSchema } from "@/utils/schemas";
 import { TRPCClientError } from "@trpc/client";
 import { animalPayload, shelterPayload } from "@/utils/types";
 import { PrismaClient } from "@prisma/client";
+import { get } from "http";
 
 const getShelterIdByAnimal = async (animalId: number, prisma: PrismaClient) => {
   try {
@@ -298,6 +299,33 @@ export const animalsRouter = router({
       return {
         message: "Animal deleted successfully",
         data: deletedAnimal,
+        code: 200,
+      };
+    } catch (error) {
+      console.error(error);
+    }
+  }),
+
+  getShelterByAnimalId: procedure.input(z.number()).query(async ({ input }) => {
+    try {
+      const shelterId = await getShelterIdByAnimal(input, prisma);
+
+      if (!shelterId) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Shelter not found",
+        });
+      }
+
+      const shelter = await prisma.shelter.findUnique({
+        where: {
+          id: shelterId,
+        },
+      });
+
+      return {
+        message: "Shelter fetched by animal id",
+        data: shelter,
         code: 200,
       };
     } catch (error) {

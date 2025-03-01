@@ -2,11 +2,17 @@ import React from "react";
 import Image from "next/image";
 import { AnimalProps } from "@/utils/types";
 import { Card, CardContent } from "../ui/card";
+import { useRouter } from "next/navigation";
 
 const AnimalCard = ({ animal }: { animal: AnimalProps }) => {
+  const router = useRouter();
+
   return (
     <Card key={animal.id}>
-      <CardContent className="p-4">
+      <CardContent
+        className="cursor-pointer p-4"
+        onClick={() => router.push(`/animals/${animal.id}`)}
+      >
         <div className="flex items-center space-x-4">
           <Image
             src={"/placeholder.svg"}

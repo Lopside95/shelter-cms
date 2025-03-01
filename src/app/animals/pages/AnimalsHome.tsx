@@ -14,16 +14,10 @@ const AnimalsHome = ({ animals }: { animals: AnimalProps[] }) => {
   const router = useRouter();
   const handleClick = (id: number) => {
     router.push(`/animals/${id}`);
-
-    // console.log("clicked");
   };
-
-  console.log("animals", animals);
 
   return (
     <div className="flex flex-wrap p-3">
-      <div>Hello</div>
-      {/* <AddAnimalForm /> */}
       {animals.map((animal) => {
         return (
           <GridCard
@@ -33,7 +27,6 @@ const AnimalsHome = ({ animals }: { animals: AnimalProps[] }) => {
           />
         );
       })}
-      {/* <GridCard animals={animals} /> */}
       <h1>Animals</h1>
     </div>
   );
