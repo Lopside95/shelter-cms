@@ -16,6 +16,7 @@ const Navbar = () => {
       <Link href="/items">Items</Link>
       <Link href="/shelters">Shelters</Link>
       <Link href="/animals">Animals</Link>
+      <Link href="/food">Food</Link>
     </nav>
   );
 };

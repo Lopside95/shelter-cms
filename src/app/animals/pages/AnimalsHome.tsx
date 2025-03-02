@@ -27,7 +27,6 @@ const AnimalsHome = ({ animals }: { animals: AnimalProps[] }) => {
           />
         );
       })}
-      <h1>Animals</h1>
     </div>
   );
 };
