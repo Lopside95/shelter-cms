@@ -24,13 +24,11 @@ import { useRouter } from "next/navigation";
 import { api } from "@/app/trpc/client";
 import FindShelter from "@/components/FindShelter";
 import ShelterCard from "@/components/cards/ShelterCard";
-import { ShelterProps } from "@/utils/types";
+import { ShelterProps, ShelterWhole } from "@/utils/types";
 import { Shelter } from "@prisma/client";
 import { getHTTPStatusCodeFromError } from "@trpc/server/unstable-core-do-not-import";
 
-const SheltersHome = ({ shelters }: { shelters: ShelterProps[] }) => {
-  const [toSearch, setToSearch] = useState<string>("");
-
+const SheltersHome = ({ shelters }: { shelters: ShelterWhole[] }) => {
   const router = useRouter();
 
   const form = useForm<ShelterSchema>({

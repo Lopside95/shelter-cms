@@ -44,12 +44,21 @@ export const animalPayload = (animal: Animal) => {
 };
 
 export const shelterWithAnimalsAndFood = (
-  shelters: Shelter[],
+  shelter: Shelter,
   animals: Animal[],
   food: Food[]
 ) => {
   return {
-    shelters: shelters.map(shelterPayload),
+    id: shelter.id,
+    name: shelter.name,
+    location: shelter.location,
+    phone: shelter.phone,
+    email: shelter.email,
+    capacity: shelter.capacity,
+    longitude: shelter.longitude,
+    latitude: shelter.latitude,
+    createdAt: shelter.created_at,
+    updatedAt: shelter.updated_at,
     animals: animals.map(animalPayload),
     food: food.map(foodPayload),
   };
@@ -58,6 +67,7 @@ export const shelterWithAnimalsAndFood = (
 export type FoodProps = ReturnType<typeof foodPayload>;
 export type AnimalProps = ReturnType<typeof animalPayload>;
 export type ShelterProps = ReturnType<typeof shelterPayload>;
+export type ShelterWhole = ReturnType<typeof shelterWithAnimalsAndFood>;
 
 export type FormInput = {
   name: string;

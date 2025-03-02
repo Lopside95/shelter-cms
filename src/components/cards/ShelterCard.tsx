@@ -1,4 +1,9 @@
-import { AnimalProps, FoodProps, ShelterProps } from "@/utils/types";
+import {
+  AnimalProps,
+  FoodProps,
+  ShelterProps,
+  ShelterWhole,
+} from "@/utils/types";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -9,8 +14,10 @@ import {
 } from "../ui/card";
 import { useRouter } from "next/navigation";
 
-const ShelterCard = ({ shelter }: { shelter: ShelterProps }) => {
+const ShelterCard = ({ shelter }: { shelter: ShelterWhole }) => {
   const router = useRouter();
+
+  console.log("shelterInCard", shelter);
 
   const { animals, food } = shelter;
 
