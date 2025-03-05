@@ -49,7 +49,16 @@ export const foodRouter = router({
         });
       }
       console.error(error);
-      throw new Error("Error creating food: " + (error as Error).message);
+
+      const foodError = error as Error;
+
+      const errData = {
+        msg: foodError.message,
+        cause: foodError.cause,
+        name: foodError.name,
+      };
+
+      throw new Error("Error creating food: " + foodError.message);
     }
   }),
 });

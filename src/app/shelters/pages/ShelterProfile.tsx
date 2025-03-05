@@ -25,10 +25,6 @@ const ShelterProfile = ({ shelter, animals, food }: ShelterProfileProps) => {
 
   const { id, name } = shelter;
 
-  useEffect(() => {
-    console.log("animals Length", animals.length);
-  }, []);
-
   return (
     <div className="container mx-auto p-4 space-y-8">
       <ShelterInfo shelter={shelter} />

@@ -28,7 +28,10 @@ const AnimalsTabs = ({ animals }: { animals: AnimalProps[] }) => {
               <Cat className="h-4 w-4" /> Cats
             </TabsTrigger>
           </TabsList>
-          <TabsContent value={selectedAnimalType} className="flex flex-wrap">
+          <TabsContent
+            value={selectedAnimalType}
+            className="flex gap-5  flex-wrap"
+          >
             {animals.map((animal) => {
               return <AnimalCard key={animal.id} animal={animal} />;
             })}

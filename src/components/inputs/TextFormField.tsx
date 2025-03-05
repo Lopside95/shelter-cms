@@ -11,9 +11,11 @@ import { useFormContext } from "react-hook-form";
 import { Input } from "../ui/input";
 
 const TextField = ({ name, type, label, desc, placeholder, cn }: FormInput) => {
-  const { control } = useFormContext();
+  const { control, getFieldState } = useFormContext();
 
   const fieldStyle = `w-80 ${cn}`;
+
+  const error = getFieldState(name).error;
 
   return (
     <FormField
@@ -21,7 +23,9 @@ const TextField = ({ name, type, label, desc, placeholder, cn }: FormInput) => {
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className={`${error?.message ? "hidden" : ""}`}>
+            {label}
+          </FormLabel>
           <FormMessage />
           <FormControl>
             <Input

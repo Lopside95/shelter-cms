@@ -59,14 +59,14 @@ const SheltersHome = ({ shelters }: { shelters: ShelterWhole[] }) => {
   const addAnimal = async () => {
     try {
       const res = await mutateAnimal.mutateAsync({
-        name: "Steve",
-        species: "DOG",
+        name: "Cat One",
+        species: "CAT",
         age: 7,
-        chipNumber: "123",
+        chipNumber: "1231233",
         shelterId: 1,
         breed: "Beagle",
         condition: "HEALTHY",
-        image: "https://images.dog.ceo/breeds/african/images.jpg",
+        image: "",
       });
 
       return res;
@@ -112,7 +112,7 @@ const SheltersHome = ({ shelters }: { shelters: ShelterWhole[] }) => {
       </Card> */}
       <Card className=" w-3/4 px-20 mx-auto">
         <CardHeader>
-          <CardTitle>Create New Shelter</CardTitle>
+          <CardTitle>Add a shelter</CardTitle>
           <CardDescription>
             Enter the details for the new animal shelter.
           </CardDescription>
@@ -121,12 +121,17 @@ const SheltersHome = ({ shelters }: { shelters: ShelterWhole[] }) => {
           <FormProvider {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-wrap"
+              className="flex flex-wrap justify-between"
             >
               <TextField
                 name="name"
                 label="Shelter name"
                 placeholder="Name of the shelter"
+              />
+              <TextField
+                name="email"
+                label="Email"
+                placeholder="Enter email address"
               />
               <TextField
                 name="location"
@@ -138,15 +143,10 @@ const SheltersHome = ({ shelters }: { shelters: ShelterWhole[] }) => {
                 label="Phone number"
                 placeholder="Enter phone number"
               />
-              <TextField
-                name="email"
-                label="Email"
-                placeholder="Enter email address"
-              />
               <NumberField name="capacity" label="Capacity" />
 
-              <Button type="submit" className="w-full">
-                Create Shelter
+              <Button type="submit" className="w-80">
+                Add
               </Button>
             </form>
           </FormProvider>

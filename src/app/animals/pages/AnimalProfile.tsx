@@ -30,6 +30,7 @@ import { AnimalProps, ShelterProps } from "@/utils/types";
 import FeatureCard from "@/components/cards/FeatureCard";
 import { api } from "@/app/trpc/client";
 import { useRouter } from "next/navigation";
+import TimeDetailsCard from "@/components/cards/TimeDetailsCard";
 
 // interface AnimalProfileProps {
 //   animal: AnimalProps;
@@ -155,31 +156,10 @@ const AnimalProfile = ({ data }: { data: AnimalProfileProps }) => {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl font-bold">Timeline</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-start gap-4">
-                <div className="min-w-4">
-                  <CheckCircle2 className="h-4 w-4 text-green-500" />
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium">Last Updated</p>
-                  <p className="text-sm text-muted-foreground"></p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="min-w-4">
-                  <Clock className="h-4 w-4 text-blue-500" />
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium">Added to System</p>
-                  <p className="text-sm text-muted-foreground"></p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <TimeDetailsCard
+            createdAt={animal.createdAt}
+            updatedAt={animal.updatedAt}
+          />
 
           <Card>
             <CardHeader>

@@ -8,7 +8,7 @@ const AnimalCard = ({ animal }: { animal: AnimalProps }) => {
   const router = useRouter();
 
   return (
-    <Card key={animal.id}>
+    <Card key={animal.id} className="w-60">
       <CardContent
         className="cursor-pointer p-4"
         onClick={() => router.push(`/animals/${animal.id}`)}

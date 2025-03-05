@@ -10,7 +10,7 @@ import {
 import { useFormContext } from "react-hook-form";
 import { Input } from "../ui/input";
 
-const NumberField = ({ name, type, label, desc }: FormInput) => {
+const NumberField = ({ name, type, label, desc, cn }: FormInput) => {
   const { control } = useFormContext();
 
   return (
@@ -24,6 +24,7 @@ const NumberField = ({ name, type, label, desc }: FormInput) => {
             <FormMessage />
             <FormControl>
               <Input
+                className={`w-80 ${cn}`}
                 type="number"
                 placeholder="Enter latitude"
                 {...field}
