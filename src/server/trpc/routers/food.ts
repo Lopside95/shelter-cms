@@ -23,6 +23,27 @@ export const foodRouter = router({
       console.error(error);
     }
   }),
+  getFoodById: procedure.input(z.number()).query(async ({ input }) => {
+    try {
+      const food = await prisma.food.findUnique({
+        where: {
+          id: input,
+        },
+      });
+      return {
+        data: food,
+        code: 200,
+      };
+    } catch (error: unknown) {
+      if (error instanceof TRPCError) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Failed to fetch food",
+        });
+      }
+      console.error(error);
+    }
+  }),
   getFoodsByShelterId: procedure.input(z.number()).query(async ({ input }) => {
     try {
       const food = await prisma.food.findMany({
@@ -53,7 +74,7 @@ export const foodRouter = router({
       const newFood = await prisma.food.create({
         data: {
           name: input.name,
-          type: input.type,
+          type: input.type || "",
           brand: input.brand,
           quantity: input.quantity,
           shelter_id: input.shelterId,
@@ -101,12 +122,17 @@ export const foodRouter = router({
           id: input.id,
         },
         data: {
+          id: input.id,
           name: input.name,
           type: input.type,
           brand: input.brand,
           quantity: input.quantity,
+          shelter_id: input.shelterId,
+          updated_at: new Date(),
         },
       });
+
+      // return updatedFood;
 
       return {
         data: updatedFood,

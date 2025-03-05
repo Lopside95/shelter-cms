@@ -52,3 +52,24 @@ export const formatDate = (date: Date): string => {
   };
   return new Intl.DateTimeFormat("en-US", options).format(date);
 };
+
+// export type Variants = "destructive" | "warning" | "default";
+
+export const foodStatus = (num: number) => {
+  if (num <= 8) {
+    return {
+      label: "Low",
+      variant: "destructive",
+    };
+  }
+  if (num <= 15) {
+    return {
+      label: "Adequate",
+      variant: "default",
+    };
+  }
+  return {
+    label: "Good",
+    variant: "default",
+  };
+};

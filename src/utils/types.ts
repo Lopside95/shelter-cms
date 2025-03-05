@@ -77,6 +77,7 @@ export type FormInput = {
   placeholder?: string;
   type?: string;
   cn?: string;
+  defVal?: string | number;
 };
 
 export type TextInputType = {

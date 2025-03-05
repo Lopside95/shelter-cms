@@ -10,7 +10,15 @@ import {
 import { useFormContext } from "react-hook-form";
 import { Input } from "../ui/input";
 
-const TextField = ({ name, type, label, desc, placeholder, cn }: FormInput) => {
+const TextField = ({
+  name,
+  type,
+  label,
+  desc,
+  placeholder,
+  cn,
+  defVal,
+}: FormInput) => {
   const { control, getFieldState } = useFormContext();
 
   const fieldStyle = `w-80 ${cn}`;

@@ -5,14 +5,6 @@ import type React from "react";
 import { useState } from "react";
 import { format } from "date-fns";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
   Table,
   TableBody,
   TableCell,
@@ -20,56 +12,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Search, Filter, ChevronDown, ArrowUpDown } from "lucide-react";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import TextField from "@/components/inputs/TextFormField";
-import NumberField from "@/components/inputs/NumberField";
-import { FoodSchema } from "@/utils/schemas";
+import { Search, ArrowUpDown } from "lucide-react";
 import { api } from "@/app/trpc/client";
-import { FoodProps } from "@/utils/types";
+import { foodPayload, FoodProps } from "@/utils/types";
+import { foodStatus } from "@/utils/helpers";
+import FoodUpdateForm from "@/components/inputs/FoodUpdateForm";
 
-// Types
-// interface FoodProps {
-//   id: string | number;
-//   name: string;
-//   brand: string;
-//   quantity: number;
-//   shelterId: number;
-//   //   shelterName: string;
-//   updatedAt: Date;
-// }
-
-// interface FoodInventoryTableProps {
-//   food: FoodProps[];
-//   onUpdateFood: (id: string | number, updatedData: Partial<FoodProps>) => void;
-// }
+type BadgeVariant = "destructive" | "default" | "outline" | "secondary";
 
 const SingleShelterFood = ({ food }: { food: FoodProps[] }) => {
-  // State
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedShelter, setSelectedShelter] = useState<string>("all");
   const [sortField, setSortField] = useState<keyof FoodProps>("updatedAt");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
-  const [selectedFood, setSelectedFood] = useState<FoodProps | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const shelters = Array.from(new Set(food.map((item) => item.shelterId)));
+  const [selectedId, setSelectedId] = useState<number | null>();
 
+  const { data, isLoading, refetch } = api.food.getFoodById.useQuery(
+    selectedId || 0,
+    {
+      enabled: selectedId !== 0,
+    }
+  );
+
+  const selectedFood = data?.data ? foodPayload(data.data) : null;
   const filteredAndSortedItems = food
     .filter((item) => {
       return (
@@ -86,31 +53,11 @@ const SingleShelterFood = ({ food }: { food: FoodProps[] }) => {
       return 0;
     });
 
-  const handleRowClick = (food: FoodProps) => {
-    setSelectedFood(food);
+  const handleSelectFood = async (foodId: number) => {
+    setSelectedId(foodId);
+    await refetch();
+    if (isLoading) return <div>Loading food...</div>;
     setIsDialogOpen(true);
-  };
-
-  const form = useForm<FoodProps>({
-    defaultValues: {
-      name: "",
-      brand: "",
-      quantity: 0,
-      shelterId: 0,
-      type: "",
-    },
-  });
-
-  const mutateFood = api.food.updateFood.useMutation();
-
-  const onSubmit: SubmitHandler<FoodSchema> = async (data: FoodSchema) => {
-    try {
-      const res = await mutateFood.mutateAsync(data);
-
-      return res;
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   const handleSort = (field: keyof FoodProps) => {
@@ -120,12 +67,6 @@ const SingleShelterFood = ({ food }: { food: FoodProps[] }) => {
       setSortField(field);
       setSortDirection("asc");
     }
-  };
-
-  const getQuantityStatus = (quantity: number) => {
-    if (quantity <= 5) return { label: "Low", variant: "destructive" as const };
-    if (quantity <= 20) return { label: "Medium", variant: "warning" as const };
-    return { label: "Good", variant: "success" as const };
   };
 
   return (
@@ -140,36 +81,6 @@ const SingleShelterFood = ({ food }: { food: FoodProps[] }) => {
             className="pl-8"
           />
         </div>
-        {/* <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-full sm:w-[180px]">
-              <Filter className="mr-2 h-4 w-4" />
-              Filter
-              <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[200px]">
-            <div className="p-2">
-              <div className="mb-2 text-xs font-medium">Shelter</div>
-              <Select
-                value={selectedShelter}
-                onValueChange={setSelectedShelter}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select shelter" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Shelters</SelectItem>
-                  {shelters.map((shelter) => (
-                    <SelectItem key={shelter} value={shelter}>
-                      {shelter}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu> */}
       </div>
 
       <div className="rounded-md border">
@@ -226,21 +137,31 @@ const SingleShelterFood = ({ food }: { food: FoodProps[] }) => {
           <TableBody>
             {filteredAndSortedItems.length > 0 ? (
               filteredAndSortedItems.map((food) => {
-                const status = getQuantityStatus(food.quantity);
+                const status = foodStatus(food.quantity);
                 return (
                   <TableRow
                     key={food.id}
                     className="cursor-pointer hover:bg-muted/50"
-                    onClick={() => handleRowClick(food)}
+                    onClick={() => handleSelectFood(food.id)}
+
+                    // onClick={() => {
+                    //   setIsDialogOpen(true);
+
+                    //   setSelectedId(food.id);
+                    //   refetch();
+                    //   // handleRowClick(food.id);
+                    // }}
                   >
                     <TableCell className="font-medium">{food.name}</TableCell>
                     <TableCell>{food.brand}</TableCell>
                     <TableCell className="text-center">
                       <div className="flex justify-center items-center">
-                        <Badge className="mr-2">{status.label}</Badge>
-                        {/* <Badge variant={status.variant} className="mr-2">
+                        <Badge
+                          variant={status.variant as BadgeVariant}
+                          className="mr-2"
+                        >
                           {status.label}
-                        </Badge> */}
+                        </Badge>
                         {food.quantity}
                       </div>
                     </TableCell>
@@ -262,42 +183,12 @@ const SingleShelterFood = ({ food }: { food: FoodProps[] }) => {
         </Table>
       </div>
 
-      <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Edit Food Item</DialogTitle>
-                <DialogDescription>
-                  Update the details for this food item. Click save when
-                  you&apos;re done.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <TextField
-                    //   id="name"
-                    name="name"
-                    label="Name"
-
-                    //   value={formData.name || ""}
-                    //   onChange={handleInputChange}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <TextField name="brand" label="Brand" />
-                </div>
-                <div className="grid gap-2">
-                  <NumberField name="quantity" label="Quantity" />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button type="submit">Save changes</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </form>
-      </FormProvider>
+      <FoodUpdateForm
+        selectedFood={!isLoading ? selectedFood : null}
+        foodId={selectedId!}
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+      />
     </div>
   );
 };

@@ -13,7 +13,7 @@ import { use, useEffect, useState } from "react";
 import { uploadPhoto } from "@/utils/helpers";
 import FoodTable from "@/components/table/FoodTable";
 import { FoodInventoryTable } from "@/components/FoodInvTable";
-import SingleShelterFood from "../components/InventoryFood";
+import SingleShelterFood from "../components/SingleShelterFood";
 
 interface ShelterProfileProps {
   shelter: ShelterProps;
