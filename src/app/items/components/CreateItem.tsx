@@ -15,10 +15,9 @@ import { itemSchema, ItemSchema } from "@/utils/schemas";
 import TextField from "@/components/inputs/TextFormField";
 import NumberField from "@/components/inputs/NumberField";
 import { useState } from "react";
-import { ItemProps } from "@/utils/types";
 import { api } from "@/app/trpc/client";
 
-const CreateItem = ({ items }: { items: ItemProps[] }) => {
+const CreateItem = ({ items }: { items: ItemSchema[] }) => {
   const form = useForm<ItemSchema>({
     resolver: zodResolver(itemSchema),
     defaultValues: {

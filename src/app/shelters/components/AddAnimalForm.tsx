@@ -11,6 +11,7 @@ import { uploadPhoto } from "@/utils/helpers";
 import { AnimalSchema, animalSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Condition } from "@prisma/client";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import {
   FormProvider,
@@ -49,6 +50,8 @@ const AddAnimalForm = ({
   const animalName = form.watch("name");
 
   const mutateAnimal = api.animals.createAnimal.useMutation();
+
+  // const mutate = useMutation(api.animals.createAnimal.mutationOptions())
 
   useEffect(() => {
     console.log("file useff", file);

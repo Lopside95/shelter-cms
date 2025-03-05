@@ -31,11 +31,16 @@ import FeatureCard from "@/components/cards/FeatureCard";
 import { api } from "@/app/trpc/client";
 import { useRouter } from "next/navigation";
 import TimeDetailsCard from "@/components/cards/TimeDetailsCard";
-
-// interface AnimalProfileProps {
-//   animal: AnimalProps;
-//   shelterName: string;
-// }
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
+} from "@/components/ui/table";
 
 type AnimalProfileProps = {
   animal: AnimalProps;
@@ -64,6 +69,8 @@ const AnimalProfile = ({ data }: { data: AnimalProfileProps }) => {
     }
   };
 
+  console.log("animal.condition", animal.condition);
+
   return (
     <div className="container mx-auto p-4 space-y-6">
       <div className="flex items-center gap-4">
@@ -89,23 +96,43 @@ const AnimalProfile = ({ data }: { data: AnimalProfileProps }) => {
                 className="object-cover"
               />
             </div>
-            <div className="space-y-2 text-center">
+            {/* <div className="px-2">
+              <h1 className="">{animal.name}</h1>
+              <p className="text-muted-foreground ">{animal.breed}</p>
+            </div> */}
+
+            {/* <div className="p-5 justify-between items-center">
+              <div className="flex  justify-between py-1 items-center">
+                <h2>Name</h2>
+                <h1 >{animal.name}</h1>
+              </div>
+              <div className="flex justify-between items-center">
+                <h3>Breed</h3>
+                <h1>{animal.breed}</h1>
+              </div>
+            </div> */}
+            <div className="flex p-5 justify-between items-center">
+              <h1>{animal.name}</h1>
+              <p>{animal.breed}</p>
+            </div>
+
+            {/* <div className="space-y-2 text-center">
               <h1 className="text-2xl font-bold">{animal.name}</h1>
               <p className="text-muted-foreground">
                 {animal.species} • {animal.breed}
               </p>
-            </div>
+            </div> */}
           </CardContent>
-          <div className="flex flex-col gap-2 p-4 items-center">
+          {/* <div className="flex flex-col gap-2 p-4 items-center">
             <Button variant="link" size="icon" onClick={handleDelete}>
               <Pencil className="h-4 w-4" />
               <span className="">Remove animal</span>
             </Button>
             <Button variant="link" size="icon">
-              {/* <Pencil className="h-4 w-4" /> */}
+              <Pencil className="h-4 w-4" />
               <span className="">Transfer to a different shelter</span>
             </Button>
-          </div>
+          </div> */}
         </Card>
 
         <div className="space-y-6">
@@ -116,44 +143,7 @@ const AnimalProfile = ({ data }: { data: AnimalProfileProps }) => {
               </CardTitle>
               <EditAnimalDialog animal={animal} />
             </CardHeader>
-            <CardContent className="grid gap-4 sm:grid-cols-2">
-              <AnimalInfoCard
-                icon={<Paw className="h-4 w-4" />}
-                title="Species"
-                species={animal.species}
-                breed={animal.breed}
-                // value={animal.species}
-              />
-              {/* <AnimalInfoCard
-                icon={<Paw className="h-4 w-4" />}
-                title="Breed"
-                value={animal.breed}
-              /> */}
-              <FeatureCard
-                icon={<Calendar className="h-4 w-4" />}
-                title="Age"
-                value={animal.age}
-              />
-              {animal.shelterId ? (
-                <FeatureCard
-                  icon={<Building2 className="h-4 w-4" />}
-                  title="Shelter"
-                  value={animal.shelterId}
-                  description={shelter?.name}
-                />
-              ) : (
-                <FeatureCard
-                  icon={<Building2 className="h-4 w-4" />}
-                  title="Shelter ID"
-                  value="No Shelter"
-                />
-              )}
-              <FeatureCard
-                icon={<QrCode className="h-4 w-4" />}
-                title="Chip Number"
-                value={animal.chipNumber}
-              />
-            </CardContent>
+            <CardContent className="grid gap-4 sm:grid-cols-2"></CardContent>
           </Card>
 
           <TimeDetailsCard
@@ -237,3 +227,60 @@ function EditAnimalDialog({ animal }: { animal: AnimalProps }) {
 }
 
 export default AnimalProfile;
+
+{
+  /* <AnimalInfoCard
+                icon={<Paw className="h-4 w-4" />}
+                title="Species"
+                species={animal.species}
+                breed={animal.breed}
+              /> */
+}
+{
+  /* <AnimalInfoCard
+                icon={<Paw className="h-4 w-4" />}
+                title="Breed"
+                value={animal.breed}
+              /> */
+}
+{
+  /* <AnimalInfoCard
+                icon={<Calendar className="h-4 w-4" />}
+                title="Age"
+                val1={animal.age}
+                val2={animal.condition}
+              /> */
+}
+// <Card className="flex items-center text-center gap-16 ">
+{
+  /* <CardHeader></CardHeader> */
+}
+{
+  /* <CardContent className="justify-self-end">
+                  <h2>Age {animal.age}</h2>
+                  <h2>Condition {animal.condition}</h2>
+                  <h2>{}</h2>
+                </CardContent>
+              </Card>
+              {animal.shelterId ? (
+                <FeatureCard
+                  icon={<Building2 className="h-4 w-4" />}
+                  title="Shelter"
+                  value={animal.shelterId}
+                  description={shelter?.name}
+                />
+              ) : (
+                <FeatureCard
+                  icon={<Building2 className="h-4 w-4" />}
+                  title="Shelter ID"
+                  value="No Shelter"
+                />
+              )} */
+}
+{
+  /* <FeatureCard
+                icon={<QrCode className="h-4 w-4" />}
+                title="Chip Number"
+                value={animal.chipNumber}
+              /> */
+}

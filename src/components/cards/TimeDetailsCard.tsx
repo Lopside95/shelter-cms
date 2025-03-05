@@ -26,7 +26,7 @@ const TimeDetailsCard = ({ updatedAt, createdAt }: TimeDetailsProps) => {
       <CardHeader>
         <CardTitle className="text-xl font-bold">Timeline</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className=" space-y-4">
         <div className="flex items-start gap-4">
           <div className="min-w-4">
             <CheckCircle2 className="h-4 w-4 text-green-500" />

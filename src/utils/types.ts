@@ -40,6 +40,7 @@ export const animalPayload = (animal: Animal) => {
     createdAt: animal.created_at,
     updatedAt: animal.updated_at,
     image: animal.image,
+    condition: animal.condition,
   };
 };
 

@@ -8,8 +8,18 @@ export const foodRouter = router({
   getFood: procedure.query(async () => {
     try {
       const food = await prisma.food.findMany();
-      return food;
-    } catch (error) {
+      return {
+        data: food,
+        count: food.length,
+        code: 200,
+      };
+    } catch (error: unknown) {
+      if (error instanceof TRPCError) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Failed to fetch food",
+        });
+      }
       console.error(error);
     }
   }),
@@ -23,8 +33,18 @@ export const foodRouter = router({
 
       const payload = food.map((food) => foodPayload(food));
 
-      return payload;
-    } catch (error) {
+      return {
+        food: payload,
+        count: payload.length,
+        code: 200,
+      };
+    } catch (error: unknown) {
+      if (error instanceof TRPCError) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Failed to fetch food",
+        });
+      }
       console.error(error);
     }
   }),
@@ -59,6 +79,52 @@ export const foodRouter = router({
       };
 
       throw new Error("Error creating food: " + foodError.message);
+    }
+  }),
+  updateFood: procedure.input(foodSchema).mutation(async ({ input }) => {
+    try {
+      const food = await prisma.food.findFirst({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (!food) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Food not found",
+        });
+      }
+
+      const updatedFood = await prisma.food.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+          type: input.type,
+          brand: input.brand,
+          quantity: input.quantity,
+        },
+      });
+
+      return {
+        data: updatedFood,
+        code: 200,
+        message: "Food updated successfully",
+      };
+
+      // const payload = foodPayload(food);
+
+      // return payload;
+    } catch (error: unknown) {
+      if (error instanceof TRPCError) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Failed to fetch food",
+        });
+      }
+      console.error(error);
     }
   }),
 });

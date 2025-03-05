@@ -90,10 +90,7 @@ export const animalsRouter = router({
         );
       }
 
-      const theError = error as Error;
-      console.log("theError", theError);
-
-      throw new Error(`Failed to create animal: ${(error as Error).message}`);
+      console.error(error);
     }
   }),
   getAnimalsAndShelters: procedure.query(async ({ ctx }) => {

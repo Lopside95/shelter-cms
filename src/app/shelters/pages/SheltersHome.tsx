@@ -24,9 +24,20 @@ import { useRouter } from "next/navigation";
 import { api } from "@/app/trpc/client";
 import FindShelter from "@/components/FindShelter";
 import ShelterCard from "@/components/cards/ShelterCard";
-import { ShelterProps, ShelterWhole } from "@/utils/types";
+import { foodPayload, ShelterProps, ShelterWhole } from "@/utils/types";
 import { Shelter } from "@prisma/client";
 import { getHTTPStatusCodeFromError } from "@trpc/server/unstable-core-do-not-import";
+import { DataTable } from "@/components/table/DataTable";
+import { columns } from "@/components/table/columns";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const SheltersHome = ({ shelters }: { shelters: ShelterWhole[] }) => {
   const router = useRouter();
@@ -46,15 +57,21 @@ const SheltersHome = ({ shelters }: { shelters: ShelterWhole[] }) => {
   const mutateAnimal = api.animals.createAnimal.useMutation();
   const makeFood = async () => {
     const res = await mutateFood.mutateAsync({
-      name: "Chicken Bits",
-      type: "Wet",
-      brand: "Butternut Box",
+      name: "Chicken Pellets",
+      type: "Dry",
+      brand: "Hills ",
       quantity: 10,
       shelterId: 1,
     });
 
     return res;
   };
+
+  // const { data: food, isLoading } = api.food.getFood.useQuery();
+
+  // const foodData = food?.data.map(foodPayload);
+
+  // const foodData = food?.map(foodPayload);
 
   const addAnimal = async () => {
     try {
@@ -153,10 +170,14 @@ const SheltersHome = ({ shelters }: { shelters: ShelterWhole[] }) => {
         </CardContent>
       </Card>
 
+      {/* {isLoading && <p>Loading Food...</p>} */}
+
+      {/* <DataTable columns={columns} data={foodData ? foodData : []} /> */}
+
       <Button className="w-80" onClick={makeFood}>
         Make Food
       </Button>
-      <div>TESTING</div>
+      <div>Quick Data</div>
       <Button className="w-80" onClick={addAnimal}>
         Add animal
       </Button>

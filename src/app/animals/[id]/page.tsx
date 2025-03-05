@@ -15,11 +15,6 @@ const AnimalProfilePage = async ({ params }: { params: DynamicParams }) => {
     );
   }
 
-  const animal = res?.data;
-  // const animal = res?.data.animal as AnimalProps;
-
-  type AnimalType = typeof animal;
-
   const data = res.data;
 
   return <AnimalProfile data={data} />;
