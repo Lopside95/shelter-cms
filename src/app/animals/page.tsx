@@ -6,7 +6,7 @@ import AnimalsHome from "./pages/AnimalsHome";
 const AnimalsHomePage = async () => {
   const res = await trpc.animals.getAnimals();
 
-  if (!res.data) {
+  if (!res || !res.data) {
     return <div>No data found</div>;
   }
 

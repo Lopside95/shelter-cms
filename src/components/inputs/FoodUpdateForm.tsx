@@ -17,12 +17,15 @@ import { FoodSchema } from "@/utils/schemas";
 import { api } from "@/app/trpc/client";
 import { FoodProps } from "@/utils/types";
 import { use, useEffect } from "react";
+import { set } from "date-fns";
 
 type FoodUpdateFormProps = {
   foodId: number;
   isDialogOpen?: boolean;
   setIsDialogOpen?: (isOpen: boolean) => void;
   selectedFood: FoodProps | null;
+  refetch?: () => void;
+  setSearchQuery?: (query: string) => void;
 };
 
 const FoodUpdateForm = ({
@@ -30,6 +33,8 @@ const FoodUpdateForm = ({
   isDialogOpen,
   setIsDialogOpen,
   selectedFood,
+  refetch,
+  setSearchQuery,
 }: FoodUpdateFormProps) => {
   const form = useForm<FoodProps>({
     defaultValues: {
@@ -57,11 +62,16 @@ const FoodUpdateForm = ({
 
   const mutateFood = api.food.updateFood.useMutation();
 
+  const utils = api.useUtils();
+
   const onSubmit: SubmitHandler<FoodProps> = async (data: FoodProps) => {
     try {
       const res = await mutateFood.mutateAsync(data, {
         onSuccess: () => {
-          alert("Food updated successfully");
+          utils.food.invalidate();
+
+          // refetch?.();
+          setIsDialogOpen?.(false);
         },
       });
 

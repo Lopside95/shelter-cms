@@ -51,22 +51,6 @@ const AddAnimalForm = ({
 
   const mutateAnimal = api.animals.createAnimal.useMutation();
 
-  // const mutate = useMutation(api.animals.createAnimal.mutationOptions())
-
-  useEffect(() => {
-    console.log("file useff", file);
-  }, [file]);
-
-  const onError: SubmitErrorHandler<AnimalSchema> = (errors) => {
-    console.error(errors);
-  };
-
-  const { errors } = form.formState;
-
-  useEffect(() => {
-    console.log("errors", errors);
-  }, [form.formState.errors]);
-
   const onSubmit: SubmitHandler<AnimalSchema> = async (data: AnimalSchema) => {
     try {
       if (file !== null) {
@@ -115,24 +99,7 @@ const AddAnimalForm = ({
             </label>
           ))}
           <div className="">
-            <ImageUpload
-              file={file || undefined}
-              setFile={setFile}
-              // onUpload={() => {
-              //   setFile(file);
-              //   console.log("file", file);
-              // }}
-            />
-
-            {/* <Input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              if (e.target.files) {
-                setFile(e.target.files[0]);
-              }
-            }}
-          /> */}
+            <ImageUpload file={file || undefined} setFile={setFile} />
           </div>
 
           <Button type="submit">Add Animal</Button>

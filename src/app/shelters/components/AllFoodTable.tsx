@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { format } from "date-fns";
 import {
   Table,
@@ -18,24 +18,37 @@ import { api } from "@/app/trpc/client";
 import { foodPayload, FoodProps } from "@/utils/types";
 import { foodStatus } from "@/utils/helpers";
 import FoodUpdateForm from "@/components/inputs/FoodUpdateForm";
+import { ref } from "firebase/storage";
 
 type BadgeVariant = "destructive" | "default" | "outline" | "secondary";
 
-const SingleShelterFood = ({ food }: { food: FoodProps[] }) => {
+type AllFoodProps = {
+  food: FoodProps[];
+  shelterName: string;
+};
+
+type FoodTableProps = FoodProps & {
+  shelterName?: string;
+};
+
+const AllFoodTable = ({ food }: { food: FoodTableProps[] }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortField, setSortField] = useState<keyof FoodProps>("updatedAt");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState<number | null>();
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [selectedId, setSelectedId] = useState<number>(1);
 
   const { data, isLoading, refetch } = api.food.getFoodById.useQuery(
-    selectedId || 0,
+    selectedId,
     {
-      enabled: selectedId !== 0,
+      enabled: true,
+      refetchOnMount: true,
     }
   );
 
-  const selectedFood = data?.data ? foodPayload(data.data) : null;
+  const selectedFood = data?.data;
+
+  // const selectedFood = data?.data ? foodPayload(data.data) : null;
   const filteredAndSortedItems = food
     .filter((item) => {
       return (
@@ -69,7 +82,7 @@ const SingleShelterFood = ({ food }: { food: FoodProps[] }) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-3/4">
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -156,7 +169,7 @@ const SingleShelterFood = ({ food }: { food: FoodProps[] }) => {
                         {food.quantity}
                       </div>
                     </TableCell>
-                    <TableCell>{food.shelterId}</TableCell>
+                    <TableCell>{food.shelterName}</TableCell>
                     <TableCell className="text-right">
                       {format(new Date(food.updatedAt), "MMM d, yyyy")}
                     </TableCell>
@@ -175,12 +188,13 @@ const SingleShelterFood = ({ food }: { food: FoodProps[] }) => {
       </div>
 
       <FoodUpdateForm
-        selectedFood={!isLoading ? selectedFood : null}
+        selectedFood={!isLoading && selectedFood ? selectedFood : null}
         foodId={selectedId!}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
+        refetch={refetch}
       />
     </div>
   );
 };
-export default SingleShelterFood;
+export default AllFoodTable;

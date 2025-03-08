@@ -21,7 +21,6 @@ const ShelterInfo = ({ shelter }: { shelter: ShelterProps }) => {
               {shelter.location}
             </CardDescription>
           </div>
-          {/* <Button>Edit Shelter</Button> */}
         </div>
       </CardHeader>
       <CardContent>

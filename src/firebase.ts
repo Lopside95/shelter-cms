@@ -11,8 +11,6 @@ const firebaseConfig = {
   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
 };
 
-// console.log(firebaseConfig.appId);
-
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 

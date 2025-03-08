@@ -30,17 +30,8 @@ import { AnimalProps, ShelterProps } from "@/utils/types";
 import FeatureCard from "@/components/cards/FeatureCard";
 import { api } from "@/app/trpc/client";
 import { useRouter } from "next/navigation";
-import TimeDetailsCard from "@/components/cards/TimeDetailsCard";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableCaption,
-} from "@/components/ui/table";
+
+import SystemInfoCard from "@/components/cards/SystemInfoCard";
 
 type AnimalProfileProps = {
   animal: AnimalProps;
@@ -90,7 +81,8 @@ const AnimalProfile = ({ data }: { data: AnimalProfileProps }) => {
           <CardContent className="p-4">
             <div className="aspect-square relative rounded-lg overflow-hidden mb-4">
               <Image
-                src={animal.image || "/icons/dog.png"}
+                src={"/icons/dog.png"}
+                // src={animal.image || "/icons/dog.png"}
                 alt={animal.name}
                 fill
                 className="object-cover"
@@ -143,14 +135,15 @@ const AnimalProfile = ({ data }: { data: AnimalProfileProps }) => {
               </CardTitle>
               <EditAnimalDialog animal={animal} />
             </CardHeader>
-            <CardContent className="grid gap-4 sm:grid-cols-2"></CardContent>
+            <CardContent className="grid gap-4 sm:grid-cols-2">
+              <p>{animal.age}</p>
+              <p>{shelter?.name}</p>
+              <p>{animal.age}</p>
+            </CardContent>
           </Card>
 
-          <TimeDetailsCard
-            createdAt={animal.createdAt}
-            updatedAt={animal.updatedAt}
-          />
-
+          <SystemInfoCard animal={animal} />
+          {/* 
           <Card>
             <CardHeader>
               <CardTitle className="text-xl font-bold">
@@ -173,7 +166,7 @@ const AnimalProfile = ({ data }: { data: AnimalProfileProps }) => {
                 </span>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
       </div>
     </div>

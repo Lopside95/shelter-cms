@@ -25,9 +25,9 @@ export default AnimalProfilePage;
 export async function generateStaticParams() {
   const res = await trpc.animals.getAnimals();
 
-  const animals = res.data;
+  const animals = res?.data;
 
-  return animals.map((animal) => {
+  return animals?.map((animal) => {
     return {
       animal: animal.id.toString(),
     };

@@ -29,9 +29,25 @@ export const foodRouter = router({
         where: {
           id: input,
         },
+        include: {
+          shelter: true,
+        },
       });
+
+      if (!food) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Food not found",
+        });
+      }
+
+      const payload = {
+        ...foodPayload(food),
+        shelterName: food.shelter?.name,
+      };
+
       return {
-        data: food,
+        data: payload,
         code: 200,
       };
     } catch (error: unknown) {
@@ -44,6 +60,29 @@ export const foodRouter = router({
       console.error(error);
     }
   }),
+  // getShelterNameByFoodId: procedure
+  //   .input(z.number())
+  //   .query(async ({ input }) => {
+  //     try {
+  //       const shelter = await prisma.food.findUnique({
+  //         where: {
+  //           id: input,
+  //         },
+  //       });
+  //       return {
+  //         data: shelter?.name,
+  //         code: 200,
+  //       };
+  //     } catch (error: unknown) {
+  //       if (error instanceof TRPCError) {
+  //         throw new TRPCError({
+  //           code: "NOT_FOUND",
+  //           message: "Failed to fetch shelter name by food Id",
+  //         });
+  //       }
+  //       console.error(error);
+  //     }
+  //   }),
   getFoodsByShelterId: procedure.input(z.number()).query(async ({ input }) => {
     try {
       const food = await prisma.food.findMany({

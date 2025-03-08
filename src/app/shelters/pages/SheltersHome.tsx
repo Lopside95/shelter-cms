@@ -38,6 +38,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import AllFoodTable from "../components/AllFoodTable";
 
 const SheltersHome = ({ shelters }: { shelters: ShelterWhole[] }) => {
   const router = useRouter();
@@ -67,6 +68,29 @@ const SheltersHome = ({ shelters }: { shelters: ShelterWhole[] }) => {
     return res;
   };
 
+  const foodData = shelters.flatMap((shelter) =>
+    shelter.food.map((foodItem) => ({
+      ...foodItem,
+      shelterName: shelter.name,
+    }))
+  );
+
+  console.log("foodData", foodData);
+
+  // const foodData = shelters.map((shelter) => {
+  //   return {
+  //     shelterName: shelter.name,
+  //     food: shelter.food,
+  //   };
+  // });
+
+  // console.log("foodData", foodData);
+
+  // const food = foodData.flatMap((item) => item);
+
+  // const food = foodData.flatMap((food) => food);
+
+  // console.log("food", food);
   // const { data: food, isLoading } = api.food.getFood.useQuery();
 
   // const foodData = food?.data.map(foodPayload);
@@ -170,6 +194,11 @@ const SheltersHome = ({ shelters }: { shelters: ShelterWhole[] }) => {
         </CardContent>
       </Card>
 
+      <AllFoodTable
+        food={foodData}
+        // food={foodData[0].food}
+        // shelterName={foodData[0].shelterName}
+      />
       {/* {isLoading && <p>Loading Food...</p>} */}
 
       {/* <DataTable columns={columns} data={foodData ? foodData : []} /> */}
