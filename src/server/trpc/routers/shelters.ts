@@ -79,15 +79,17 @@ export const sheltersRouter = router({
           food: true,
         },
       });
-      if (!shelter) {
+
+      if (!shelter?.id) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Shelter not found",
+          message: "That ID does not exist",
+          cause: "Shelter not found",
         });
       }
 
-      const food = shelter.food.map((food) => foodPayload(food));
-      const animals = shelter.animals.map((animal) => animalPayload(animal));
+      const food = shelter?.food.map((food) => foodPayload(food));
+      const animals = shelter?.animals.map((animal) => animalPayload(animal));
 
       const payload = {
         ...shelterPayload(shelter),
@@ -100,7 +102,8 @@ export const sheltersRouter = router({
       console.error(error);
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch shelter by ID",
+        message: "Failed to fetch shelter by that ID",
+        cause: "Shelter not found",
       });
     }
   }),

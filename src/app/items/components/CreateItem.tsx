@@ -16,6 +16,7 @@ import TextField from "@/components/inputs/TextFormField";
 import NumberField from "@/components/inputs/NumberField";
 import { useState } from "react";
 import { api } from "@/app/trpc/client";
+import AnimatedCircle from "@/components/AnimatedCircle";
 
 const CreateItem = ({ items }: { items: ItemSchema[] }) => {
   const form = useForm<ItemSchema>({
@@ -68,7 +69,7 @@ const CreateItem = ({ items }: { items: ItemSchema[] }) => {
                 placeholder="Name of the item"
               />
 
-              <NumberField name="quantity" label="Qauntity" />
+              <NumberField name="quantity" label="Quantity" />
               <Button type="submit" className="w-80">
                 Create Item
               </Button>
@@ -76,6 +77,13 @@ const CreateItem = ({ items }: { items: ItemSchema[] }) => {
           </Form>
         </CardContent>
       </Card>
+      <div className="w-full h-96 flex items-center justify-center border border-black">
+        <AnimatedCircle />
+      </div>
+
+      {/* <Card>
+        <AnimatedCircle />
+      </Card> */}
     </div>
   );
 };

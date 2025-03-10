@@ -39,6 +39,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import AllFoodTable from "../components/AllFoodTable";
+import MyPieChart from "@/components/PieChart";
 
 const SheltersHome = ({ shelters }: { shelters: ShelterWhole[] }) => {
   const router = useRouter();
